@@ -1,0 +1,52 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Job Control Language",
+	"patterns": [
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#keywords"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [
+				{
+					"_description": "All statements that have a * in column 1",
+					"name": "comment.line.double-slash.hlasm",
+					"match": "(^|\\n)//\\*.*"
+				},
+				{
+					"_description": "Comments that appear after a label (optional) and instruction and operands",
+					"match": "(^|\\n)([^*]\\S*|\\s*)(\\s+(\\S+)\\s+(\\S+))(.*)",
+					"captures": {
+						"4": {
+							"name": "keyword.other.jcl"
+						},
+						"5": {
+							"name": "keyword.control.jcl"
+						},
+						"6": {
+							"name": "comment.line.double-slash.hlasm"
+						}
+					}
+				}
+			]
+		},
+		"strings": {
+			"_description": "",
+			"patterns": [
+				{
+					"match": "(^|\\n).*('.*')",
+					"captures": {
+						"2": {
+							"name": "string.quoted.single.jcl"
+						}
+					}
+				}
+			]
+		}
+	},
+	"scopeName": "source.jcl"
+}

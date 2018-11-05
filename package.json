@@ -1,0 +1,27 @@
+{
+    "name": "ibm-jcl",
+    "displayName": "ibm-jcl",
+    "description": "IBM Job Control Language",
+    "repository": "https://github.com/dkelosky/vscode-jcl-hlasm",
+    "version": "0.0.1",
+    "publisher": "kelosky",
+    "engines": {
+        "vscode": "^1.28.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "jcl",
+            "aliases": ["JCL", "jcl"],
+            "extensions": [".jcl",".cntl"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "jcl",
+            "scopeName": "source.jcl",
+            "path": "./syntaxes/jcl.tmLanguage.json"
+        }]
+    }
+}
