@@ -5,6 +5,7 @@
     "repository": "https://github.com/dkelosky/vscode-jcl-hlasm",
     "version": "0.0.1",
     "publisher": "kelosky",
+    "icon": "docs/images/icon.png",
     "engines": {
         "vscode": "^1.28.0"
     },

@@ -1,6 +1,6 @@
 # ibm-jcl README
 
-This is the README for your extension "ibm-jcl". After writing up a brief description, we recommend including the following sections.
+Extension "ibm-jcl".
 
 ## Features
 
