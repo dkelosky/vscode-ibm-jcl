@@ -2,7 +2,7 @@
     "name": "ibm-jcl",
     "displayName": "ibm-jcl",
     "description": "IBM Job Control Language",
-    "repository": "https://github.com/dkelosky/vscode-jcl-hlasm",
+    "repository": "https://github.com/dkelosky/vscode-ibm-jcl",
     "version": "0.1.0",
     "publisher": "kelosky",
     "icon": "docs/images/icon.png",
