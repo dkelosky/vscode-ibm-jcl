@@ -3,7 +3,7 @@
     "displayName": "ibm-jcl",
     "description": "IBM Job Control Language",
     "repository": "https://github.com/dkelosky/vscode-ibm-jcl",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "keywords": [
         "z/OS",
         "s390",
