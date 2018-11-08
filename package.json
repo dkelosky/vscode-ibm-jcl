@@ -4,6 +4,11 @@
     "description": "IBM Job Control Language",
     "repository": "https://github.com/dkelosky/vscode-ibm-jcl",
     "version": "0.2.0",
+    "keywords": [
+        "z/OS",
+        "s390",
+        "mvs"
+    ],
     "publisher": "kelosky",
     "icon": "docs/images/icon.png",
     "engines": {
