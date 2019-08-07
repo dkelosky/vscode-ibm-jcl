@@ -3,11 +3,13 @@
     "displayName": "ibm-jcl",
     "description": "IBM Job Control Language",
     "repository": "https://github.com/dkelosky/vscode-ibm-jcl",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "keywords": [
         "z/OS",
         "s390",
-        "mvs"
+        "mvs",
+        "jcl",
+        "job control language"
     ],
     "publisher": "kelosky",
     "icon": "docs/images/icon.png",
@@ -17,7 +19,31 @@
     "categories": [
         "Programming Languages"
     ],
+    "main": "./client/out/extension",
     "contributes": {
+        "configuration": {
+            "type": "object",
+            "title": "JCL configuration",
+            "properties": {
+                "jclServer.maxNumberOfProblems": {
+                    "scope": "resource",
+                    "type": "number",
+                    "default": 100,
+                    "description": "Controls the maximum number of problems produced by the server."
+                },
+                "jclServer.trace.server": {
+                    "scope": "window",
+                    "type": "string",
+                    "enum": [
+                        "off",
+                        "messages",
+                        "verbose"
+                    ],
+                    "default": "off",
+                    "description": "Traces the communication between VS Code and the language server."
+                }
+            }
+        },
         "languages": [
             {
                 "id": "jcl",
@@ -39,5 +65,22 @@
                 "path": "./syntaxes/jcl.tmLanguage.json"
             }
         ]
+    },
+    "activationEvents": [
+        "onLanguage:jcl"
+    ],
+    "scripts": {
+        "vscode:prepublish": "cd client && npm run update-vscode && cd .. && npm run compile",
+        "compile": "tsc -b",
+        "watch": "tsc -b -w",
+        "postinstall": "cd client && npm install && cd ../server && npm install && cd .."
+    },
+    "devDependencies": {
+        "@types/jest": "^24.0.16",
+        "@types/node": "^8.0.0",
+        "jest": "^24.8.0",
+        "ts-jest": "^24.0.2",
+        "tslint": "^5.16.0",
+        "typescript": "^3.5.1"
     }
 }
