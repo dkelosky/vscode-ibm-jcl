@@ -3,49 +3,71 @@
 	"name": "Job Control Language",
 	"patterns": [
 		{
-			"include": "#strings"
-		},
-		{
-			"include": "#keywords"
+			"include": "#jcl_syntax"
 		}
 	],
 	"repository": {
-		"keywords": {
+		"jcl_syntax": {
 			"patterns": [
 				{
-					"_description": "All statements that have a * in column 1",
-					"name": "comment.line.double-slash.hlasm",
-					"match": "(^|\\n)//\\*.*"
-				},
-				{
-					"_description": "Comments that appear after a label (optional) and instruction and operands",
-					"match": "(^|\\n)([^*]\\S*|\\s*)(\\s+(\\S+)\\s+(\\S+))(.*)",
-					"captures": {
-						"4": {
-							"name": "keyword.other.jcl"
-						},
-						"5": {
-							"name": "keyword.control.jcl"
-						},
-						"6": {
-							"name": "comment.line.double-slash.hlasm"
-						}
-					}
+					"include": "#lineComment"
 				}
 			]
 		},
-		"strings": {
-			"_description": "",
+		"lineComment": {
+			"_description": "All statements that have a * in column 1",
 			"patterns": [
 				{
-					"match": "(^|\\n).*('.*')",
+					"name": "comment.line.double-slash.hlasm",
+					"match": "^(\\/\\/\\*.{68,68})(.*)",
 					"captures": {
+						"1": {
+							"name": "comment.line.double-slash.hlasm"
+						},
 						"2": {
-							"name": "string.quoted.single.jcl"
+							"patterns": [
+								{
+									"match": "\\s(.{0,8})",
+									"captures": {
+										"1": {
+											"_description": "SEQUENCE NUMBERS!!!!!",
+											"patterns": [
+												{
+													"include": "#sequenceNumbers"
+												}
+											]
+										}
+									}
+								},
+								{
+									"match": "([^\\s])(.{0,8})",
+									"captures": {
+										"1": {
+											"name": "invalid.illegal.hlasm"
+										},
+										"2": {
+											"_description": "SEQUENCE NUMBERS!!!!!",
+											"patterns": [
+												{
+													"include": "#sequenceNumbers"
+												}
+											]
+										}
+									}
+								}
+							]
 						}
 					}
+				},
+				{
+					"name": "comment.line.double-slash.hlasm",
+					"match": "\\/\\/\\*.*"
 				}
 			]
+		},
+		"sequenceNumbers": {
+			"name": "constant.numeric.jcl",
+			"match": ".*"
 		}
 	},
 	"scopeName": "source.jcl"
