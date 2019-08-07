@@ -7,7 +7,9 @@
     "keywords": [
         "z/OS",
         "s390",
-        "mvs"
+        "mvs",
+        "jcl",
+        "job control language"
     ],
     "publisher": "kelosky",
     "icon": "docs/images/icon.png",
