@@ -121,7 +121,6 @@ documents.onDidChangeContent((change) => {
 });
 
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
-    connection.console.error("@TEST")
     // In this simple example we get the settings for every validate run.
     const settings = await getDocumentSettings(textDocument.uri);
 
@@ -216,7 +215,7 @@ connection.onDocumentSymbol((parm) => {
     for (let i = 0; i < lines.length - 1; i++) {
 
         // if space or * in column one, it's not a symbol
-        if (lines[i][0] !== " " && lines[i][0] !== "*") {
+        if (lines[i][0] === "/" && lines[i][1] === "/" && lines[i][2] !== "*" && lines[i][2] !== " ") {
 
             // compress multiple spaces to a single space
             let  tokenizedLine = lines[i].replace(/\s+/g, " ").split(" ");
