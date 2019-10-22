@@ -1,3 +1,6 @@
+[![downloads](https://img.shields.io/visual-studio-marketplace/d/kelosky.ibm-jcl)](https://marketplace.visualstudio.com/items?itemName=kelosky.ibm-jcl)
+[![license](https://img.shields.io/github/license/dkelosky/vscode-ibm-jcl)](https://github.com/dkelosky/vscode-ibm-jcl)
+
 # JCL Highlighting Extension for VS Code
 
 Minimum featured JCL highlighter for VS Code.
