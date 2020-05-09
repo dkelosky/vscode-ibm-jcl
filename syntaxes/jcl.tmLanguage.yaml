@@ -2,172 +2,177 @@
 "$schema": https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
 name: Job Control Language
 patterns:
-- include: "#jcl_syntax"
+  - include: "#jcl_syntax"
 repository:
   jcl_syntax:
     patterns:
-    - include: "#lineTooLong"
-    - include: "#lineComment"
-    - include: "#parseLine"
-    - include: "#jclArgumentLine"
-    - include: "#jclLineStart"
+      - include: "#lineTooLong"
+      - include: "#lineComment"
+      - include: "#parseLine"
+      - include: "#jclArgumentLine"
+      - include: "#jclLineStart"
   additionaljclHighlight:
     patterns:
-    - include: "#labels"
-    - include: "#operators"
-    - include: "#numbers"
+      - include: "#labels"
+      - include: "#operators"
+      - include: "#numbers"
   lineTooLong:
-    _description: 'TODO(Kelosky): This isn''t true for JCL but will be fixed later...
-      lines should only be 72 chars, at 73 the entire line should be in error'
+    _description:
+      "TODO(Kelosky): This isn't true for JCL but will be fixed later...
+      lines should only be 72 chars, at 73 the entire line should be in error"
     patterns:
-    - name: invalid.illegal.jcl
-      match: "^.{81,}"
+      - name: invalid.illegal.jcl
+        match: "^.{81,}"
   lineComment:
     _description: All statements that have a * in column 1
     patterns:
-    - name: comment.line.double-slash.jcl
-      match: "^(\\/\\/\\*.{68,68})(.*)"
-      captures:
-        '1':
-          name: comment.line.double-slash.jcl
-        '2':
-          patterns:
-          - match: "\\s(.{0,8})"
-            captures:
-              '1':
-                _description: SEQUENCE NUMBERS!!!!!
-                patterns:
-                - include: "#sequenceNumbers"
-          - match: "([^\\s])(.{0,8})"
-            captures:
-              '1':
-                name: invalid.illegal.jcl
-              '2':
-                _description: SEQUENCE NUMBERS!!!!!
-                patterns:
-                - include: "#sequenceNumbers"
-    - name: comment.line.double-slash.jcl
-      match: "\\/\\/\\*.*"
+      - name: comment.line.double-slash.jcl
+        match: "^(\\/\\/\\*.{68,68})(.*)"
+        captures:
+          "1":
+            name: comment.line.double-slash.jcl
+          "2":
+            patterns:
+              - match: "\\s(.{0,8})"
+                captures:
+                  "1":
+                    _description: SEQUENCE NUMBERS!!!!!
+                    patterns:
+                      - include: "#sequenceNumbers"
+              - match: "([^\\s])(.{0,8})"
+                captures:
+                  "1":
+                    name: invalid.illegal.jcl
+                  "2":
+                    _description: SEQUENCE NUMBERS!!!!!
+                    patterns:
+                      - include: "#sequenceNumbers"
+      - name: comment.line.double-slash.jcl
+        match: "\\/\\/\\*.*"
   parseLine:
     patterns:
-    - _description: Continuation character that appears in column 72
-      match: "^(.{71,71})([^\\s])(.{0,8})"
-      captures:
-        '1':
-          _description: Allow syntax highlighting of the rest of the line
-          patterns:
-          - include: "#jclArgumentLine"
-          - include: "#jclLineStart"
-        '2':
-          name: keyword.other.jcl
-        '3':
-          _description: SEQUENCE NUMBERS!!!!!
-          patterns:
-          - include: "#sequenceNumbers"
-        '5':
-          _description: This next capture group is the entire next line
-          patterns:
-          - match: "\\S.*"
-            name: invalid.illegal
-    - _description: Sequence numbers for non-continuation lines
-      match: "^(.{71,71})(\\s?)(.{0,8})$"
-      captures:
-        '1':
-          _description: Allow syntax highlighting of the rest of the line
-          patterns:
-          - include: "#jclArgumentLine"
-          - include: "#jclLineStart"
-        '3':
-          _description: SEQUENCE NUMBERS!!!!!
-          patterns:
-          - include: "#sequenceNumbers"
+      - _description: Continuation character that appears in column 72
+        match: "^(.{71,71})([^\\s])(.{0,8})"
+        captures:
+          "1":
+            _description: Allow syntax highlighting of the rest of the line
+            patterns:
+              - include: "#jclArgumentLine"
+              - include: "#jclLineStart"
+          "2":
+            name: keyword.other.jcl
+          "3":
+            _description: SEQUENCE NUMBERS!!!!!
+            patterns:
+              - include: "#sequenceNumbers"
+          "5":
+            _description: This next capture group is the entire next line
+            patterns:
+              - match: "\\S.*"
+                name: invalid.illegal
+      - _description: Sequence numbers for non-continuation lines
+        match: "^(.{71,71})(\\s?)(.{0,8})$"
+        captures:
+          "1":
+            _description: Allow syntax highlighting of the rest of the line
+            patterns:
+              - include: "#jclArgumentLine"
+              - include: "#jclLineStart"
+          "3":
+            _description: SEQUENCE NUMBERS!!!!!
+            patterns:
+              - include: "#sequenceNumbers"
   jclLineStart:
     _description: The various parts of an assembler line
     patterns:
-    - match: "^([^*]\\S*)?\\s+(.*)$"
-      captures:
-        '1':
-          _description: The label for a line.
-          name: entity.name.function.jcl
-        '2':
-          _description: The assembler instructions for this statement
-          patterns:
-          - include: "#jclInstruction"
+      - match: "^([^*]\\S*)?\\s+(.*)$"
+        captures:
+          "1":
+            _description: The label for a line.
+            name: entity.name.function.jcl
+          "2":
+            _description: The assembler instructions for this statement
+            patterns:
+              - include: "#jclInstruction"
   jclInstruction:
-    _description: A simple assembler source statement with 3 things. An instruction,
+    _description:
+      A simple assembler source statement with 3 things. An instruction,
       parameters, and comment
     patterns:
-    - match: "(\\S+)\\s*(.*)"
-      captures:
-        '1':
-          name: keyword.other.jcl
-        '2':
-          patterns:
-          - include: "#jclArguments"
+      - match: "(\\S+)\\s*(.*)"
+        captures:
+          "1":
+            name: keyword.other.jcl
+          "2":
+            patterns:
+              - include: "#jclArguments"
   jclArgumentLine:
-    _description: This is for a line consisting of only an argument. This implies
+    _description:
+      This is for a line consisting of only an argument. This implies
       the previous line was a continuation
     patterns:
-    - _description: A line matching this syntax should follow the argument syntax
-      match: "^\\s+(\\S+=.*)$"
-      captures:
-        '1':
-          patterns:
-          - include: "#jclArguments"
+      - _description: A line matching this syntax should follow the argument syntax
+        match: "^\\s+(\\S+=.*)$"
+        captures:
+          "1":
+            patterns:
+              - include: "#jclArguments"
   jclArguments:
     patterns:
-    - include: "#stringType"
-    - include: "#quoteType"
-    - _description: Handle no strings in instruction
-      match: "(\\S*)(.*)"
-      captures:
-        '1':
-          _description: This group refers to an instruction operator
-          name: keyword.control.jcl
-          patterns:
-          - include: "#additionaljclHighlight"
-        '2':
-          _description: The rest of the line is a comment.
-          name: comment.line.double-slash.jcl
-    - _description: If the current pattern starts with a space, then we should comment
-        the rest of the string
-      match: "\\s.*"
-      name: comment.line.double-slash.jcl
+      - include: "#stringType"
+      - include: "#quoteType"
+      - _description: Handle no strings in instruction
+        match: "(\\S*)(.*)"
+        captures:
+          "1":
+            _description: This group refers to an instruction operator
+            name: keyword.control.jcl
+            patterns:
+              - include: "#additionaljclHighlight"
+          "2":
+            _description: The rest of the line is a comment.
+            name: comment.line.double-slash.jcl
+      - _description:
+          If the current pattern starts with a space, then we should comment
+          the rest of the string
+        match: "\\s.*"
+        name: comment.line.double-slash.jcl
   stringType:
     patterns:
-    - _description: Handle strings in an instruction
-      match: "(\\S*?)('.*?')(.*)"
-      captures:
-        '1':
-          _description: This group refers to an instruction operator
-          name: keyword.control.jcl
-          patterns:
-          - include: "#additionaljclHighlight"
-        '2':
-          _description: A string was found, so we can't be sure this is the end of
-            the line
-          name: string.quoted.single.jcl
-        '3':
-          _description: Recursively call this rule to get all patterns.
-          patterns:
-          - include: "#jclArguments"
+      - _description: Handle strings in an instruction
+        match: "(\\S*?)('.*?')(.*)"
+        captures:
+          "1":
+            _description: This group refers to an instruction operator
+            name: keyword.control.jcl
+            patterns:
+              - include: "#additionaljclHighlight"
+          "2":
+            _description:
+              A string was found, so we can't be sure this is the end of
+              the line
+            name: string.quoted.single.jcl
+          "3":
+            _description: Recursively call this rule to get all patterns.
+            patterns:
+              - include: "#jclArguments"
   quoteType:
     patterns:
-    - _description: Handle a length instruction
-      match: "(\\S*?)([LKNT]')(.*)"
-      captures:
-        '1':
-          _description: This group refers to an instruction operator
-          name: keyword.control.jcl
-          patterns:
-          - include: "#additionaljclHighlight"
-        '2':
-          _description: Highlight the L' operator as a type
-          name: support.type.jcl
-        '3':
-          _description: Recursively call this rule to get all patterns.
-          patterns:
-          - include: "#jclArguments"
+      - _description: Handle a length instruction
+        match: "(\\S*?)([LKNT]')(.*)"
+        captures:
+          "1":
+            _description: This group refers to an instruction operator
+            name: keyword.control.jcl
+            patterns:
+              - include: "#additionaljclHighlight"
+          "2":
+            _description: Highlight the L' operator as a type
+            name: support.type.jcl
+          "3":
+            _description: Recursively call this rule to get all patterns.
+            patterns:
+              - include: "#jclArguments"
   labels:
     _description: marks special labels in the code
     match: "[*]"
