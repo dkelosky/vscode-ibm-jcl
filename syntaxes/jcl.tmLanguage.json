@@ -19,14 +19,14 @@
 					"include": "#parseLine"
 				},
 				{
-					"include": "#asmArgumentLine"
+					"include": "#jclArgumentLine"
 				},
 				{
-					"include": "#asmLineStart"
+					"include": "#jclLineStart"
 				}
 			]
 		},
-		"additionalAsmHighlight": {
+		"additionaljclHighlight": {
 			"patterns": [
 				{
 					"include": "#labels"
@@ -109,10 +109,10 @@
 							"_description": "Allow syntax highlighting of the rest of the line",
 							"patterns": [
 								{
-									"include": "#asmArgumentLine"
+									"include": "#jclArgumentLine"
 								},
 								{
-									"include": "#asmLineStart"
+									"include": "#jclLineStart"
 								}
 							]
 						},
@@ -146,10 +146,10 @@
 							"_description": "Allow syntax highlighting of the rest of the line",
 							"patterns": [
 								{
-									"include": "#asmArgumentLine"
+									"include": "#jclArgumentLine"
 								},
 								{
-									"include": "#asmLineStart"
+									"include": "#jclLineStart"
 								}
 							]
 						},
@@ -165,7 +165,7 @@
 				}
 			]
 		},
-		"asmLineStart": {
+		"jclLineStart": {
 			"_description": "The various parts of an assembler line",
 			"patterns": [
 				{
@@ -179,7 +179,7 @@
 							"_description": "The assembler instructions for this statement",
 							"patterns": [
 								{
-									"include": "#asmInstruction"
+									"include": "#jclInstruction"
 								}
 							]
 						}
@@ -187,7 +187,7 @@
 				}
 			]
 		},
-		"asmInstruction": {
+		"jclInstruction": {
 			"_description": "A simple assembler source statement with 3 things. An instruction, parameters, and comment",
 			"patterns": [
 				{
@@ -199,7 +199,7 @@
 						"2": {
 							"patterns": [
 								{
-									"include": "#asmArguments"
+									"include": "#jclArguments"
 								}
 							]
 						}
@@ -207,7 +207,7 @@
 				}
 			]
 		},
-		"asmArgumentLine": {
+		"jclArgumentLine": {
 			"_description": "This is for a line consisting of only an argument. This implies the previous line was a continuation",
 			"patterns": [
 				{
@@ -217,7 +217,7 @@
 						"1": {
 							"patterns": [
 								{
-									"include": "#asmArguments"
+									"include": "#jclArguments"
 								}
 							]
 						}
@@ -225,7 +225,7 @@
 				}
 			]
 		},
-		"asmArguments": {
+		"jclArguments": {
 			"patterns": [
 				{
 					"include": "#stringType"
@@ -242,7 +242,7 @@
 							"name": "keyword.control.jcl",
 							"patterns": [
 								{
-									"include": "#additionalAsmHighlight"
+									"include": "#additionaljclHighlight"
 								}
 							]
 						},
@@ -270,7 +270,7 @@
 							"name": "keyword.control.jcl",
 							"patterns": [
 								{
-									"include": "#additionalAsmHighlight"
+									"include": "#additionaljclHighlight"
 								}
 							]
 						},
@@ -282,7 +282,7 @@
 							"_description": "Recursively call this rule to get all patterns.",
 							"patterns": [
 								{
-									"include": "#asmArguments"
+									"include": "#jclArguments"
 								}
 							]
 						}
@@ -301,7 +301,7 @@
 							"name": "keyword.control.jcl",
 							"patterns": [
 								{
-									"include": "#additionalAsmHighlight"
+									"include": "#additionaljclHighlight"
 								}
 							]
 						},
@@ -313,7 +313,7 @@
 							"_description": "Recursively call this rule to get all patterns.",
 							"patterns": [
 								{
-									"include": "#asmArguments"
+									"include": "#jclArguments"
 								}
 							]
 						}
