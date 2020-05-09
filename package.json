@@ -3,7 +3,7 @@
     "displayName": "ibm-jcl",
     "description": "IBM Job Control Language",
     "repository": "https://github.com/dkelosky/vscode-ibm-jcl",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "keywords": [
         "z/OS",
         "s390",
@@ -70,15 +70,17 @@
         "onLanguage:jcl"
     ],
     "scripts": {
-        "vscode:prepublish": "cd client && npm run update-vscode && cd .. && npm run compile",
+        "vscode:prepublish": "npm run build:syntax && cd client && npm run update-vscode && cd .. && npm run compile",
         "compile": "tsc -b",
         "watch": "tsc -b -w",
+        "build:syntax": "js-yaml syntaxes/jcl.tmLanguage.yaml > syntaxes/jcl.tmLanguage.json",
         "postinstall": "cd client && npm install && cd ../server && npm install && cd .."
     },
     "devDependencies": {
         "@types/jest": "^24.0.16",
         "@types/node": "^8.0.0",
         "jest": "^24.8.0",
+        "js-yaml": "^3.13.1",
         "ts-jest": "^24.0.2",
         "tslint": "^5.16.0",
         "typescript": "^3.5.1"
