@@ -174,7 +174,6 @@
       ]
     },
     "jclInstruction": {
-      "_description": "A simple assembler source statement with 3 things. An instruction, parameters, and comment",
       "patterns": [
         {
           "match": "(\\S+)\\s*(.*)",
@@ -194,7 +193,6 @@
       ]
     },
     "jclArgumentLine": {
-      "_description": "This is for a line consisting of only an argument. This implies the previous line was a continuation",
       "patterns": [
         {
           "match": "^\\s+(\\S+=.*)$",
@@ -235,7 +233,6 @@
           }
         },
         {
-          "_description": "If the current pattern starts with a space, then we should comment the rest of the string",
           "match": "\\s.*",
           "name": "comment.line.double-slash.jcl"
         }
@@ -255,7 +252,6 @@
               ]
             },
             "2": {
-              "_description": "A string was found, so we can't be sure this is the end of the line",
               "name": "string.quoted.single.jcl"
             },
             "3": {
