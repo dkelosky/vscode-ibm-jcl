@@ -17,14 +17,13 @@ repository:
       - include: "#operators"
       - include: "#numbers"
   lineTooLong:
-    _description:
-      "TODO(Kelosky): This isn't true for JCL but will be fixed later...
-      lines should only be 72 chars, at 73 the entire line should be in error"
+    #  "TODO(Kelosky): This isn't true for JCL but will be fixed later...
+    #  lines should only be 72 chars, at 73 the entire line should be in error"
     patterns:
       - name: invalid.illegal.jcl
         match: "^.{81,}"
   lineComment:
-    _description: All statements that have a * in column 1
+    # All statements that have a * in column 1
     patterns:
       - name: comment.line.double-slash.jcl
         match: "^(\\/\\/\\*.{68,68})(.*)"
@@ -36,7 +35,7 @@ repository:
               - match: "\\s(.{0,8})"
                 captures:
                   "1":
-                    _description: SEQUENCE NUMBERS!!!!!
+                    # SEQUENCE NUMBERS!!!!!
                     patterns:
                       - include: "#sequenceNumbers"
               - match: "([^\\s])(.{0,8})"
@@ -44,54 +43,54 @@ repository:
                   "1":
                     name: invalid.illegal.jcl
                   "2":
-                    _description: SEQUENCE NUMBERS!!!!!
+                    # SEQUENCE NUMBERS!!!!!
                     patterns:
                       - include: "#sequenceNumbers"
       - name: comment.line.double-slash.jcl
         match: "\\/\\/\\*.*"
   parseLine:
     patterns:
-      - _description: Continuation character that appears in column 72
+      - # Continuation character that appears in column 72
         match: "^(.{71,71})([^\\s])(.{0,8})"
         captures:
           "1":
-            _description: Allow syntax highlighting of the rest of the line
+            # Allow syntax highlighting of the rest of the line
             patterns:
               - include: "#jclArgumentLine"
               - include: "#jclLineStart"
           "2":
             name: keyword.other.jcl
           "3":
-            _description: SEQUENCE NUMBERS!!!!!
+            # SEQUENCE NUMBERS!!!!!
             patterns:
               - include: "#sequenceNumbers"
           "5":
-            _description: This next capture group is the entire next line
+            # This next capture group is the entire next line
             patterns:
               - match: "\\S.*"
                 name: invalid.illegal
-      - _description: Sequence numbers for non-continuation lines
+      - # Sequence numbers for non-continuation lines
         match: "^(.{71,71})(\\s?)(.{0,8})$"
         captures:
           "1":
-            _description: Allow syntax highlighting of the rest of the line
+            # Allow syntax highlighting of the rest of the line
             patterns:
               - include: "#jclArgumentLine"
               - include: "#jclLineStart"
           "3":
-            _description: SEQUENCE NUMBERS!!!!!
+            # SEQUENCE NUMBERS!!!!!
             patterns:
               - include: "#sequenceNumbers"
   jclLineStart:
-    _description: The various parts of an assembler line
+    # The various parts of an assembler line
     patterns:
       - match: "^([^*]\\S*)?\\s+(.*)$"
         captures:
           "1":
-            _description: The label for a line.
+            # The label for a line.
             name: entity.name.function.jcl
           "2":
-            _description: The assembler instructions for this statement
+            # The assembler instructions for this statement
             patterns:
               - include: "#jclInstruction"
   jclInstruction:
@@ -111,7 +110,7 @@ repository:
       This is for a line consisting of only an argument. This implies
       the previous line was a continuation
     patterns:
-      - _description: A line matching this syntax should follow the argument syntax
+      - # A line matching this syntax should follow the argument syntax
         match: "^\\s+(\\S+=.*)$"
         captures:
           "1":
@@ -121,16 +120,16 @@ repository:
     patterns:
       - include: "#stringType"
       - include: "#quoteType"
-      - _description: Handle no strings in instruction
+      - # Handle no strings in instruction
         match: "(\\S*)(.*)"
         captures:
           "1":
-            _description: This group refers to an instruction operator
+            # This group refers to an instruction operator
             name: keyword.control.jcl
             patterns:
               - include: "#additionaljclHighlight"
           "2":
-            _description: The rest of the line is a comment.
+            # The rest of the line is a comment.
             name: comment.line.double-slash.jcl
       - _description:
           If the current pattern starts with a space, then we should comment
@@ -139,11 +138,11 @@ repository:
         name: comment.line.double-slash.jcl
   stringType:
     patterns:
-      - _description: Handle strings in an instruction
+      - # Handle strings in an instruction
         match: "(\\S*?)('.*?')(.*)"
         captures:
           "1":
-            _description: This group refers to an instruction operator
+            # This group refers to an instruction operator
             name: keyword.control.jcl
             patterns:
               - include: "#additionaljclHighlight"
@@ -153,36 +152,36 @@ repository:
               the line
             name: string.quoted.single.jcl
           "3":
-            _description: Recursively call this rule to get all patterns.
+            # Recursively call this rule to get all patterns.
             patterns:
               - include: "#jclArguments"
   quoteType:
     patterns:
-      - _description: Handle a length instruction
+      - # Handle a length instruction
         match: "(\\S*?)([LKNT]')(.*)"
         captures:
           "1":
-            _description: This group refers to an instruction operator
+            # This group refers to an instruction operator
             name: keyword.control.jcl
             patterns:
               - include: "#additionaljclHighlight"
           "2":
-            _description: Highlight the L' operator as a type
+            # Highlight the L' operator as a type
             name: support.type.jcl
           "3":
-            _description: Recursively call this rule to get all patterns.
+            # Recursively call this rule to get all patterns.
             patterns:
               - include: "#jclArguments"
   labels:
-    _description: marks special labels in the code
+    # marks special labels in the code
     match: "[*]"
     name: support.function.jcl
   operators:
-    _description: marks operators properly
+    # marks operators properly
     match: "[=(),+]"
     name: keyword.operator.jcl
   numbers:
-    _description: marks numbers properly
+    # marks numbers properly
     match: "(?<=[=(),*\\s+])-?\\d*(?=[=(),*+\\s]|$)"
     name: constant.numeric.jcl
   sequenceNumbers:
