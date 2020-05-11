@@ -10,22 +10,12 @@ patterns:
 repository:
   jcl_syntax:
     patterns:
+      # first found match applies
       - include: "#lineTooLong"
       - include: "#lineComment"
-      # -> sequenceNumbers
       - include: "#parseLine"
-      # -> jclArgumentLine
-      # -> jclLineStart
-      # -> sequenceNumbers
       - include: "#jclArgumentLine"
-      # -> jclArguments
       - include: "#jclLineStart"
-      # -> jclInstruction
-
-      # jclInstruction
-      # -> jclArguments
-
-      # include jclArguments
   additionaljclHighlight:
     patterns:
       - include: "#labels"
@@ -59,18 +49,6 @@ repository:
     patterns:
       - # Continuation character that appears in column 72
         match: "^(.{72,72})(.{0,8})"
-        captures:
-          "1":
-            # Allow syntax highlighting of the rest of the line
-            patterns:
-              - include: "#jclArgumentLine"
-              - include: "#jclLineStart"
-          "2":
-            # SEQUENCE NUMBERS!!!!!
-            patterns:
-              - include: "#sequenceNumbers"
-      - # Sequence numbers for non-continuation lines
-        match: "^(.{72,72})(.{0,8})$"
         captures:
           "1":
             # Allow syntax highlighting of the rest of the line

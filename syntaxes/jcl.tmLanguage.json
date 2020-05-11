@@ -10,10 +10,10 @@
     "jcl_syntax": {
       "patterns": [
         {
-          "include": "#lineComment"
+          "include": "#lineTooLong"
         },
         {
-          "include": "#lineTooLong"
+          "include": "#lineComment"
         },
         {
           "include": "#parseLine"
@@ -84,28 +84,6 @@
       "patterns": [
         {
           "match": "^(.{72,72})(.{0,8})",
-          "captures": {
-            "1": {
-              "patterns": [
-                {
-                  "include": "#jclArgumentLine"
-                },
-                {
-                  "include": "#jclLineStart"
-                }
-              ]
-            },
-            "2": {
-              "patterns": [
-                {
-                  "include": "#sequenceNumbers"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "match": "^(.{72,72})(.{0,8})$",
           "captures": {
             "1": {
               "patterns": [
