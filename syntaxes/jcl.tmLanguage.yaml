@@ -21,13 +21,20 @@ repository:
       - include: "#labels"
       - include: "#operators"
       - include: "#numbers"
+
+  #  
+  # Handles basic syntax error cases
+  #  
   lineTooLong:
     # TODO(Kelosky): this probably isn't true for all JCL, especially for //SYSIN
     # content sent through z/OSMF.
     patterns:
       - name: invalid.illegal.jcl
         match: "^.{81,}"
-  # All statements that have a `//*` in column 1
+  
+  #
+  # Handle comments - all statements that have a `//*` in column 1
+  #
   lineComment:
     patterns:
       # First, if `//*` and 69 characters follow and 8 more treat as comment and sequence
@@ -42,21 +49,28 @@ repository:
       # Else, treat entire line as comment
       - match: "\\/\\/\\*.*"
         name: comment.line.double-slash.jcl
+  
+  #
+  # Handle a line with and without sequence numbers
+  #
   parseLine:
     patterns:
-      - # Continuation character that appears in column 72
-        match: "^(.{72,72})(.{0,8})"
+      # parse off line of JCL and sequence numbers
+      - match: "^(.{72,72})(.{0,8})"
         captures:
           "1":
-            # Allow syntax highlighting of the rest of the line
+            # line of JCL
             patterns:
               - include: "#jclLineStart"
           "2":
-            # SEQUENCE NUMBERS!!!!!
+            # sequence numbers
             patterns:
               - include: "#sequenceNumbers"
+  
+  #
+  # Handle a line of JCL
+  #
   jclLineStart:
-    # The various parts of an assembler line
     patterns:
       - match: "^([^*]\\S*)?\\s+(.*)$"
         captures:
@@ -81,7 +95,6 @@ repository:
   jclArguments:
     patterns:
       - include: "#stringType"
-      # - include: "#quoteType"
       # Handle no strings in instruction
       - match: "(\\S*)(.*)"
         captures:
