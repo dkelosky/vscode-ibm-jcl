@@ -129,22 +129,6 @@
         }
       ]
     },
-    "jclArgumentLine": {
-      "patterns": [
-        {
-          "match": "^\\s+(\\S+=.*)$",
-          "captures": {
-            "1": {
-              "patterns": [
-                {
-                  "include": "#jclArguments"
-                }
-              ]
-            }
-          }
-        }
-      ]
-    },
     "jclArguments": {
       "patterns": [
         {
