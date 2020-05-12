@@ -31,18 +31,13 @@ repository:
     # All statements that have a * in column 1
     patterns:
       - name: comment.line.double-slash.jcl
-        match: "^(\\/\\/\\*.{68,68})(.*)"
+        match: "^(\\/\\/\\*.{69,69})(.*)"
         captures:
           "1":
             name: comment.line.double-slash.jcl
           "2":
             patterns:
-              - match: ".(.{0,8})"
-                captures:
-                  "1":
-                    # SEQUENCE NUMBERS!!!!!
-                    patterns:
-                      - include: "#sequenceNumbers"
+              - include: "#sequenceNumbers"
       - name: comment.line.double-slash.jcl
         match: "\\/\\/\\*.*"
   parseLine:
