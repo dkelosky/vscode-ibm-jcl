@@ -15,7 +15,6 @@ repository:
       - include: "#lineTooLong"
       - include: "#lineComment"
       - include: "#parseLine"
-      - include: "#jclArgumentLine"
       - include: "#jclLineStart"
   additionaljclHighlight:
     patterns:
@@ -51,7 +50,6 @@ repository:
           "1":
             # Allow syntax highlighting of the rest of the line
             patterns:
-              - include: "#jclArgumentLine"
               - include: "#jclLineStart"
           "2":
             # SEQUENCE NUMBERS!!!!!
@@ -78,16 +76,6 @@ repository:
           "1":
             name: keyword.other.jcl
           "2":
-            patterns:
-              - include: "#jclArguments"
-  jclArgumentLine:
-    #  This is for a line consisting of only an argument. This implies
-    #  the previous line was a continuation
-    patterns:
-      - # A line matching this syntax should follow the argument syntax
-        match: "^\\s+(\\S+=.*)$"
-        captures:
-          "1":
             patterns:
               - include: "#jclArguments"
   jclArguments:
