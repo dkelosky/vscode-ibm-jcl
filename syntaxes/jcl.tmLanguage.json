@@ -50,8 +50,8 @@
     "lineComment": {
       "patterns": [
         {
-          "name": "comment.line.double-slash.jcl",
           "match": "^(\\/\\/\\*.{69,69})(.*)",
+          "name": "comment.line.double-slash.jcl",
           "captures": {
             "1": {
               "name": "comment.line.double-slash.jcl"
@@ -66,8 +66,8 @@
           }
         },
         {
-          "name": "comment.line.double-slash.jcl",
-          "match": "\\/\\/\\*.*"
+          "match": "\\/\\/\\*.*",
+          "name": "comment.line.double-slash.jcl"
         }
       ]
     },

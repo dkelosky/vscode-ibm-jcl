@@ -10,7 +10,8 @@ patterns:
 repository:
   jcl_syntax:
     patterns:
-      # first found match applies
+      # The first found match applies.  For example, if line matches on `#lineTooLong`,
+      # it's highlighting attributes are set.
       - include: "#lineTooLong"
       - include: "#lineComment"
       - include: "#parseLine"
@@ -22,24 +23,26 @@ repository:
       - include: "#operators"
       - include: "#numbers"
   lineTooLong:
-    #  "TODO(Kelosky): This isn't true for JCL but will be fixed later...
-    #  lines should only be 72 chars, at 73 the entire line should be in error"
+    # TODO(Kelosky): this probably isn't true for all JCL, especially for //SYSIN
+    # content sent through z/OSMF.
     patterns:
       - name: invalid.illegal.jcl
         match: "^.{81,}"
+  # All statements that have a `//*` in column 1
   lineComment:
-    # All statements that have a * in column 1
     patterns:
-      - name: comment.line.double-slash.jcl
-        match: "^(\\/\\/\\*.{69,69})(.*)"
+      # First, if `//*` and 69 characters follow and 8 more treat as comment and sequence
+      - match: "^(\\/\\/\\*.{69,69})(.*)"
+        name: comment.line.double-slash.jcl
         captures:
           "1":
             name: comment.line.double-slash.jcl
           "2":
             patterns:
               - include: "#sequenceNumbers"
-      - name: comment.line.double-slash.jcl
-        match: "\\/\\/\\*.*"
+      # Else, treat entire line as comment
+      - match: "\\/\\/\\*.*"
+        name: comment.line.double-slash.jcl
   parseLine:
     patterns:
       - # Continuation character that appears in column 72
