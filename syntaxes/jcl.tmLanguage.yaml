@@ -127,23 +127,6 @@ repository:
             # Recursively call this rule to get all patterns.
             patterns:
               - include: "#jclArguments"
-  # quoteType:
-  #   patterns:
-  #     - # Handle a length instruction
-  #       match: "(\\S*?)([LKNT]')(.*)"
-  #       captures:
-  #         "1":
-  #           # This group refers to an instruction operator
-  #           name: keyword.control.jcl
-  #           patterns:
-  #             - include: "#additionaljclHighlight"
-  #         "2":
-  #           # Highlight the L' operator as a type
-  #           name: support.type.jcl
-  #         "3":
-  #           # Recursively call this rule to get all patterns.
-  #           patterns:
-  #             - include: "#jclArguments"
   labels:
     # marks special labels in the code
     match: "[*]"
