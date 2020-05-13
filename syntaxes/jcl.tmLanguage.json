@@ -149,10 +149,6 @@
               "name": "comment.line.double-slash.jcl"
             }
           }
-        },
-        {
-          "match": "\\s.*",
-          "name": "comment.line.double-slash.jcl"
         }
       ]
     },

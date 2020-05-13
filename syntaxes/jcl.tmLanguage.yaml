@@ -106,10 +106,6 @@ repository:
           "2":
             # The rest of the line is a comment.
             name: comment.line.double-slash.jcl
-      # If the current pattern starts with a space, then we should comment
-      # the rest of the string
-      - match: "\\s.*"
-        name: comment.line.double-slash.jcl
   stringType:
     patterns:
       - # Handle strings in an instruction
