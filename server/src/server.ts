@@ -148,54 +148,9 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
                 message: `Exceeded ${MAX_LEN} characters`,
                 source: "jcl"
             };
-            // if (hasDiagnosticRelatedInformationCapability) {
-            //     diagnostic.relatedInformation = [
-            //         {
-            //             location: {
-            //                 uri: textDocument.uri,
-            //                 range: Object.assign({}, diagnostic.range)
-            //             },
-            //             message: 'Spelling matters'
-            //         },
-            //         {
-            //             location: {
-            //                 uri: textDocument.uri,
-            //                 range: Object.assign({}, diagnostic.range)
-            //             },
-            //             message: 'Particularly for names'
-            //         }
-            //     ];
-            // }
+
             diagnostics.push(diagnostic);
         }
-
-        // const tokenizedLine = lines[i].replace(/\s+/g, " ").split(" ");
-
-        // if (tokenizedLine.length > 0) {
-
-        //     let kind: SymbolKind = SymbolKind.Constant;
-
-        //     // TODO(Kelosky): if LABEL MVC -> this fails to capture
-        //     if (tokenizedLine[0]) {
-        //         if (tokenizedLine[0] === "MVC") {
-        //             kind = SymbolKind.Object;
-        //         }
-
-        //         if (!tokenizedLine[1]) {
-        //             // error missing arguments
-        //             const start = lines[i].indexOf(tokenizedLine[0]);
-        //             const diagnostic: Diagnostic = {
-        //                 severity: DiagnosticSeverity.Error,
-        //                 range: {
-        //                     start: { line: i, character: start },
-        //                     end: { line: i, character: start + tokenizedLine[0].length },
-        //                 },
-        //                 message: `Argument(s) missing for ${tokenizedLine[0]}`,
-        //                 source: "hlasm"
-        //             };
-        //         }
-        //     }
-        // }
 
     }
 

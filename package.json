@@ -14,7 +14,7 @@
     "publisher": "kelosky",
     "icon": "docs/images/icon.png",
     "engines": {
-        "vscode": "^1.28.0"
+        "vscode": "^1.41.0"
     },
     "categories": [
         "Programming Languages"
@@ -42,6 +42,15 @@
                     "default": "off",
                     "description": "Traces the communication between VS Code and the language server."
                 }
+            }
+        },
+        "configurationDefaults": {
+            "[jcl]": {
+                "editor.autoIndent": "none",
+                "editor.rulers": [
+                    72,
+                    80
+                ]
             }
         },
         "languages": [
@@ -78,11 +87,12 @@
     },
     "devDependencies": {
         "@types/jest": "^24.0.16",
-        "@types/node": "^8.0.0",
+        "@types/node": "^12.12.0",
+        "@types/vscode": "^1.32.0",
         "jest": "^24.8.0",
         "js-yaml": "^3.13.1",
         "ts-jest": "^24.0.2",
-        "tslint": "^5.16.0",
-        "typescript": "^3.5.1"
+        "tslint": "^5.19.0",
+        "typescript": "^3.8.3"
     }
 }
