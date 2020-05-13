@@ -1,88 +1,76 @@
 ---
 "$schema": https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
+
+# https://macromates.com/manual/en/language_grammars#naming-conventions
+# https://www.apeth.com/nonblog/stories/textmatebundle.html
+
 name: Job Control Language
 patterns:
   - include: "#jcl_syntax"
 repository:
   jcl_syntax:
     patterns:
+      # The first found match applies.  For example, if line matches on `#lineTooLong`,
+      # it's highlighting attributes are set.
       - include: "#lineTooLong"
       - include: "#lineComment"
       - include: "#parseLine"
-      - include: "#jclArgumentLine"
       - include: "#jclLineStart"
   additionaljclHighlight:
     patterns:
       - include: "#labels"
       - include: "#operators"
       - include: "#numbers"
+
+  #  
+  # Handles basic syntax error cases
+  #  
   lineTooLong:
-    #  "TODO(Kelosky): This isn't true for JCL but will be fixed later...
-    #  lines should only be 72 chars, at 73 the entire line should be in error"
+    # TODO(Kelosky): this probably isn't true for all JCL, especially for //SYSIN
+    # content sent through z/OSMF.
     patterns:
       - name: invalid.illegal.jcl
         match: "^.{81,}"
+  
+  #
+  # Handle comments - all statements that have a `//*` in column 1
+  #
   lineComment:
-    # All statements that have a * in column 1
     patterns:
-      - name: comment.line.double-slash.jcl
-        match: "^(\\/\\/\\*.{68,68})(.*)"
+      # First, if `//*` and 69 characters follow and 8 more treat as comment and sequence
+      - match: "^(\\/\\/\\*.{69,69})(.*)"
+        name: comment.line.double-slash.jcl
         captures:
           "1":
             name: comment.line.double-slash.jcl
           "2":
             patterns:
-              - match: "\\s(.{0,8})"
-                captures:
-                  "1":
-                    # SEQUENCE NUMBERS!!!!!
-                    patterns:
-                      - include: "#sequenceNumbers"
-              - match: "([^\\s])(.{0,8})"
-                captures:
-                  "1":
-                    name: invalid.illegal.jcl
-                  "2":
-                    # SEQUENCE NUMBERS!!!!!
-                    patterns:
-                      - include: "#sequenceNumbers"
-      - name: comment.line.double-slash.jcl
-        match: "\\/\\/\\*.*"
+              - include: "#sequenceNumbers"
+      # Else, treat entire line as comment
+      - match: "\\/\\/\\*.*"
+        name: comment.line.double-slash.jcl
+  
+  #
+  # Handle a line with and without sequence numbers
+  #
   parseLine:
     patterns:
-      - # Continuation character that appears in column 72
-        match: "^(.{71,71})([^\\s])(.{0,8})"
+      # parse off line of JCL and sequence numbers
+      - match: "^(.{72,72})(.{0,8})"
         captures:
           "1":
-            # Allow syntax highlighting of the rest of the line
+            # line of JCL
             patterns:
-              - include: "#jclArgumentLine"
               - include: "#jclLineStart"
           "2":
-            name: keyword.other.jcl
-          "3":
-            # SEQUENCE NUMBERS!!!!!
+            # sequence numbers
             patterns:
               - include: "#sequenceNumbers"
-          "5":
-            # This next capture group is the entire next line
-            patterns:
-              - match: "\\S.*"
-                name: invalid.illegal
-      - # Sequence numbers for non-continuation lines
-        match: "^(.{71,71})(\\s?)(.{0,8})$"
-        captures:
-          "1":
-            # Allow syntax highlighting of the rest of the line
-            patterns:
-              - include: "#jclArgumentLine"
-              - include: "#jclLineStart"
-          "3":
-            # SEQUENCE NUMBERS!!!!!
-            patterns:
-              - include: "#sequenceNumbers"
+  
+  #
+  # Handle a line of JCL
+  #
   jclLineStart:
-    # The various parts of an assembler line
     patterns:
       - match: "^([^*]\\S*)?\\s+(.*)$"
         captures:
@@ -104,20 +92,9 @@ repository:
           "2":
             patterns:
               - include: "#jclArguments"
-  jclArgumentLine:
-    #  This is for a line consisting of only an argument. This implies
-    #  the previous line was a continuation
-    patterns:
-      - # A line matching this syntax should follow the argument syntax
-        match: "^\\s+(\\S+=.*)$"
-        captures:
-          "1":
-            patterns:
-              - include: "#jclArguments"
   jclArguments:
     patterns:
       - include: "#stringType"
-      - include: "#quoteType"
       # Handle no strings in instruction
       - match: "(\\S*)(.*)"
         captures:
@@ -129,10 +106,6 @@ repository:
           "2":
             # The rest of the line is a comment.
             name: comment.line.double-slash.jcl
-      # If the current pattern starts with a space, then we should comment
-      # the rest of the string
-      - match: "\\s.*"
-        name: comment.line.double-slash.jcl
   stringType:
     patterns:
       - # Handle strings in an instruction
@@ -147,23 +120,6 @@ repository:
             #  A string was found, so we can't be sure this is the end of
             #  the line
             name: string.quoted.single.jcl
-          "3":
-            # Recursively call this rule to get all patterns.
-            patterns:
-              - include: "#jclArguments"
-  quoteType:
-    patterns:
-      - # Handle a length instruction
-        match: "(\\S*?)([LKNT]')(.*)"
-        captures:
-          "1":
-            # This group refers to an instruction operator
-            name: keyword.control.jcl
-            patterns:
-              - include: "#additionaljclHighlight"
-          "2":
-            # Highlight the L' operator as a type
-            name: support.type.jcl
           "3":
             # Recursively call this rule to get all patterns.
             patterns:
