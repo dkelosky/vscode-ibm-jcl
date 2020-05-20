@@ -47,7 +47,7 @@ export class DocumentSemanticTokensProvider implements vscode.DocumentSemanticTo
 
     private _encodeTokenType(tokenType: string): number {
         if (tokenTypes.has(tokenType)) {
-            console.log("@@@@@@")
+            console.log("@@fffff")
             return tokenTypes.get(tokenType)!;
         } else if (tokenType === "notInLegend") {
             console.log("@@@@@@")
