@@ -1,24 +1,30 @@
-    {
-        "compilerOptions": {
-            "module": "commonjs",
-            "target": "es6",
-            "outDir": "out",
-            "rootDir": "src",
-            "sourceMap": true
-        },
-        "include": [
-            "src"
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2019",
+        "lib": [
+            "ES2019"
         ],
-        "exclude": [
-            "node_modules",
-            ".vscode-test"
-        ],
-        "references": [
-            {
-                "path": "./client"
-            },
-            {
-                "path": "./server"
-            }
+        "outDir": "out",
+        "rootDir": "src",
+        "sourceMap": true,
+        "typeRoots": [
+            "./node_modules/@types"
         ]
-    }
+    },
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "node_modules",
+        ".vscode-test"
+    ],
+    "references": [
+        {
+            "path": "./client"
+        },
+        {
+            "path": "./server"
+        }
+    ]
+}
