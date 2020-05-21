@@ -3,9 +3,6 @@ import * as vscode from "vscode";
 const tokenTypes = new Map<string, number>();
 const tokenModifiers = new Map<string, number>();
 
-// This maps tokensLegend defaults to TextMate Grammers
-// https://github.com/microsoft/vscode/blob/be0aca7188ec6a76e7c2379758c0fbc1e9c21f7b/src/vs/platform/theme/common/tokenClassificationRegistry.ts#L372-L408
-
 export const legend = (() => {
     const tokenTypesLegend = [
         "comment", "string", "keyword", "number", "regexp", "operator", "namespace",
@@ -14,7 +11,6 @@ export const legend = (() => {
     ];
     tokenTypesLegend.forEach((tokenType, index) => tokenTypes.set(tokenType, index));
 
-    // these need editor config to show
     const tokenModifiersLegend = [
         "declaration", "documentation", "readonly", "static", "abstract", "deprecated",
         "modification", "async"
@@ -41,10 +37,11 @@ export class DocumentSemanticTokensProvider implements vscode.DocumentSemanticTo
     async provideDocumentSemanticTokens(document: vscode.TextDocument, token: vscode.CancellationToken):
         Promise<vscode.SemanticTokens> {
         const allTokens = this._parseText(document.getText());
+        console.log(allTokens)
         const builder = new vscode.SemanticTokensBuilder();
         allTokens.forEach((token) => {
-            builder.push(token.line, token.startCharacter, token.length,
-            this._encodeTokenType(token.tokenType), this._encodeTokenModifiers(token.tokenModifiers));
+            builder.push(token.line, token.startCharacter, token.length, this.
+                _encodeTokenType(token.tokenType), this._encodeTokenModifiers(token.tokenModifiers));
         });
         return builder.build();
     }
@@ -53,6 +50,7 @@ export class DocumentSemanticTokensProvider implements vscode.DocumentSemanticTo
         if (tokenTypes.has(tokenType)) {
             return tokenTypes.get(tokenType)!;
         } else if (tokenType === "notInLegend") {
+            console.log(`@ ${tokenType}`)
             return tokenTypes.size + 2;
         }
         return 0;
@@ -99,7 +97,6 @@ export class DocumentSemanticTokensProvider implements vscode.DocumentSemanticTo
         }
         return r;
     }
-
 
     private _parseTextToken(text: string): { tokenType: string; tokenModifiers: string[]; } {
         let parts = text.split(".");

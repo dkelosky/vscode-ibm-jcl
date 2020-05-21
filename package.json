@@ -21,6 +21,16 @@
     ],
     "main": "./client/out/extension",
     "contributes": {
+        "semanticTokenScopes": [
+            {
+                "language": "jcl",
+                "scopes": {
+                    "what": [
+                        "invalid.illegal.jcl"
+                    ]
+                }
+            }
+        ],
         "configuration": {
             "type": "object",
             "title": "JCL configuration",
@@ -82,16 +92,19 @@
         "vscode:prepublish": "npm run build:syntax && cd client && npm run update-vscode && cd .. && npm run compile",
         "compile": "tsc -b",
         "watch": "tsc -b -w",
+        "lint": "eslint . --ext ts",
         "build:syntax": "js-yaml syntaxes/jcl.tmLanguage.yaml > syntaxes/jcl.tmLanguage.json",
         "postinstall": "cd client && npm install && cd ../server && npm install && cd .."
     },
     "devDependencies": {
         "@types/jest": "^24.0.16",
         "@types/node": "^12.12.0",
+        "@typescript-eslint/eslint-plugin": "^2.34.0",
+        "@typescript-eslint/parser": "^2.34.0",
+        "eslint": "^7.0.0",
         "jest": "^24.8.0",
         "js-yaml": "^3.13.1",
         "ts-jest": "^24.0.2",
-        "tslint": "^5.19.0",
         "typescript": "^3.8.3"
     }
 }

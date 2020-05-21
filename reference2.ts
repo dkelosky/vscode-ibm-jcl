@@ -3,18 +3,14 @@ import * as vscode from "vscode";
 const tokenTypes = new Map<string, number>();
 const tokenModifiers = new Map<string, number>();
 
-// This maps tokensLegend defaults to TextMate Grammers
-// https://github.com/microsoft/vscode/blob/be0aca7188ec6a76e7c2379758c0fbc1e9c21f7b/src/vs/platform/theme/common/tokenClassificationRegistry.ts#L372-L408
-
 export const legend = (() => {
     const tokenTypesLegend = [
         "comment", "string", "keyword", "number", "regexp", "operator", "namespace",
         "type", "struct", "class", "interface", "enum", "typeParameter", "function",
-        "member", "macro", "variable", "parameter", "property", "label"
+        "member", "macro", "variable", "parameter", "property", "label", "IF"
     ];
     tokenTypesLegend.forEach((tokenType, index) => tokenTypes.set(tokenType, index));
 
-    // these need editor config to show
     const tokenModifiersLegend = [
         "declaration", "documentation", "readonly", "static", "abstract", "deprecated",
         "modification", "async"
@@ -41,10 +37,12 @@ export class DocumentSemanticTokensProvider implements vscode.DocumentSemanticTo
     async provideDocumentSemanticTokens(document: vscode.TextDocument, token: vscode.CancellationToken):
         Promise<vscode.SemanticTokens> {
         const allTokens = this._parseText(document.getText());
+        console.log(allTokens)
         const builder = new vscode.SemanticTokensBuilder();
         allTokens.forEach((token) => {
-            builder.push(token.line, token.startCharacter, token.length,
-            this._encodeTokenType(token.tokenType), this._encodeTokenModifiers(token.tokenModifiers));
+            console.log(`${this._encodeTokenType(token.tokenType)} + ${token.tokenType}`)
+            builder.push(token.line, token.startCharacter, token.length, this.
+                _encodeTokenType(token.tokenType), this._encodeTokenModifiers(token.tokenModifiers));
         });
         return builder.build();
     }
@@ -78,28 +76,48 @@ export class DocumentSemanticTokensProvider implements vscode.DocumentSemanticTo
             const line = lines[i];
             let currentOffset = 0;
             do {
-                const openOffset = line.indexOf("[", currentOffset);
-                if (openOffset === -1) {
+                // const openOffset = line.indexOf("[", currentOffset);
+                // if (openOffset === -1) {
+                //     break;
+                // }
+                // const closeOffset = line.indexOf("]", openOffset);
+                // if (closeOffset === -1) {
+                //     break;
+                // }
+                let found = false;
+                let type2 = false;
+
+                let ifoffSet = line.indexOf("_IF_", currentOffset);
+                if (ifoffSet > -1) {
+                    found = true
+                }
+
+                if (!found) {
+                    ifoffSet = line.indexOf("_ENDIF_", currentOffset);
+                    if (ifoffSet > -1) {
+                        found = true;
+                        type2 = true;
+                    }
+
+                }
+
+                if (!found) {
                     break;
                 }
-                const closeOffset = line.indexOf("]", openOffset);
-                if (closeOffset === -1) {
-                    break;
-                }
-                let tokenData = this._parseTextToken(line.substring(openOffset + 1, closeOffset));
+
+                let tokenData = this._parseTextToken(line.substring(ifoffSet + 1, (ifoffSet + 3)));
                 r.push({
                     line: i,
-                    startCharacter: openOffset + 1,
-                    length: closeOffset - openOffset - 1,
-                    tokenType: tokenData.tokenType,
+                    startCharacter: ifoffSet + 1,
+                    length: (ifoffSet + 3) - ifoffSet - 1,
+                    tokenType: type2 ? "string" : tokenData.tokenType,
                     tokenModifiers: tokenData.tokenModifiers
                 });
-                currentOffset = closeOffset;
+                currentOffset = (ifoffSet + 3);
             } while (true);
         }
         return r;
     }
-
 
     private _parseTextToken(text: string): { tokenType: string; tokenModifiers: string[]; } {
         let parts = text.split(".");

@@ -169,7 +169,6 @@ connection.onDocumentSymbol((parm) => {
     const lines = document.getText().split("\n");
     for (let i = 0; i < lines.length - 1; i++) {
 
-        // if space or * in column one, it's not a symbol
         if (lines[i][0] === "/" && lines[i][1] === "/" && lines[i][2] !== "*" && lines[i][2] !== " ") {
 
             // compress multiple spaces to a single space
@@ -180,17 +179,9 @@ connection.onDocumentSymbol((parm) => {
 
             if (tokenizedLine.length > 0) {
 
-                let kind: SymbolKind = SymbolKind.Constant;
-
-                if (tokenizedLine[1]) {
-                    if (tokenizedLine[1] === "DSECT") {
-                        kind = SymbolKind.Object;
-                    }
-                }
-
                 const entry: SymbolInformation = {
                     name: tokenizedLine[0],
-                    kind,
+                    kind: SymbolKind.Constant,
                     location: {
                         uri: parm.textDocument.uri,
                         range: {
