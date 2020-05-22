@@ -24,7 +24,7 @@ export const legend = (() => {
     return new vscode.SemanticTokensLegend(tokenTypesLegend, tokenModifiersLegend);
 })();
 
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: vscode.ExtensionContext): void {
     context.subscriptions.push(vscode.languages
         .registerDocumentSemanticTokensProvider({ language: "jcl" }, new DocumentSemanticTokensProvider(), legend));
 }
@@ -44,7 +44,7 @@ export class DocumentSemanticTokensProvider implements vscode.DocumentSemanticTo
         const builder = new vscode.SemanticTokensBuilder();
         allTokens.forEach((token) => {
             builder.push(token.line, token.startCharacter, token.length,
-            this._encodeTokenType(token.tokenType), this._encodeTokenModifiers(token.tokenModifiers));
+                this._encodeTokenType(token.tokenType), this._encodeTokenModifiers(token.tokenModifiers));
         });
         return builder.build();
     }
@@ -77,25 +77,50 @@ export class DocumentSemanticTokensProvider implements vscode.DocumentSemanticTo
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
             let currentOffset = 0;
-            do {
-                const openOffset = line.indexOf("[", currentOffset);
-                if (openOffset === -1) {
-                    break;
-                }
-                const closeOffset = line.indexOf("]", openOffset);
-                if (closeOffset === -1) {
-                    break;
-                }
-                let tokenData = this._parseTextToken(line.substring(openOffset + 1, closeOffset));
-                r.push({
-                    line: i,
-                    startCharacter: openOffset + 1,
-                    length: closeOffset - openOffset - 1,
-                    tokenType: tokenData.tokenType,
-                    tokenModifiers: tokenData.tokenModifiers
-                });
-                currentOffset = closeOffset;
-            } while (true);
+            let openOffset = -1;
+            let closeOffset = -1;
+
+            let tokens = line.replace(/\s+/g, " ").split(" ");
+            tokens = tokens.filter((entry) => entry !== "");
+
+            // where we have // s
+            if (tokens.length > 1) {
+
+                if (tokens[1].indexOf("IF") > -1) {
+                    openOffset = line.indexOf(" IF");
+
+
+                    if ()
+                    }
+
+            }
+
+            for (let j = 0; j < tokens.length; j++) {
+
+                console.log(`${tokens[j]}`)
+            }
+
+            if (openOffset === -1) {
+                break;
+            }
+            // const openOffset = line.indexOf("[", currentOffset);
+            // if (openOffset === -1) {
+            //     break;
+            // }
+            // const closeOffset = line.indexOf("]", openOffset);
+            // if (closeOffset === -1) {
+            //     break;
+            // }
+            // let tokenData = this._parseTextToken(line.substring(openOffset + 1, closeOffset));
+            r.push({
+                line: i,
+                startCharacter: openOffset + 1,
+                length: closeOffset - openOffset - 1,
+                tokenType: tokenData.tokenType,
+                tokenModifiers: tokenData.tokenModifiers
+            });
+            // currentOffset = closeOffset;
+            // } while (true);
         }
         return r;
     }

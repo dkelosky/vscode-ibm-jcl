@@ -176,6 +176,28 @@
     "jclInstruction": {
       "patterns": [
         {
+          "match": "(IF\\s)(.*)(THEN|OR)(.*)",
+          "name": "keyword.control.jcl",
+          "captures": {
+            "1": {
+              "name": "keyword.other.jcl"
+            },
+            "2": {
+              "name": "keyword.operator.jcl"
+            },
+            "3": {
+              "name": "keyword.other.jcl"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#jclArguments"
+                }
+              ]
+            }
+          }
+        },
+        {
           "match": "(\\S+)\\s*(.*)",
           "captures": {
             "1": {
