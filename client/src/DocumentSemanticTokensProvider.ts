@@ -90,9 +90,10 @@ export class DocumentSemanticTokensProvider implements vscode.DocumentSemanticTo
                     openOffset = line.indexOf(" IF");
 
 
-                    if ()
-                    }
+                    // if ()
+                    // }
 
+                }
             }
 
             for (let j = 0; j < tokens.length; j++) {
@@ -116,8 +117,8 @@ export class DocumentSemanticTokensProvider implements vscode.DocumentSemanticTo
                 line: i,
                 startCharacter: openOffset + 1,
                 length: closeOffset - openOffset - 1,
-                tokenType: tokenData.tokenType,
-                tokenModifiers: tokenData.tokenModifiers
+                tokenType: undefined, // tokenData.tokenType,
+                tokenModifiers: undefined, // tokenData.tokenModifiers
             });
             // currentOffset = closeOffset;
             // } while (true);
