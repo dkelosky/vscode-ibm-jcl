@@ -26,9 +26,6 @@
     "additionaljclHighlight": {
       "patterns": [
         {
-          "include": "#labels"
-        },
-        {
           "include": "#operators"
         },
         {
@@ -94,7 +91,98 @@
     "jclLineStart": {
       "patterns": [
         {
-          "match": "^([^*]\\S*)?\\s+(.*)$",
+          "begin": "([^*]\\S*)?\\s+(DD\\s+\\*)\\s(.*)",
+          "end": "(.*)(^\\/\\*)(.*)",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#labels"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.other.jcl"
+            },
+            "3": {
+              "name": "comment.line.double-slash.jcl"
+            }
+          },
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "match": "(\\/\\/)?(.*)",
+                  "captures": {
+                    "1": {
+                      "patterns": [
+                        {
+                          "include": "#labels"
+                        }
+                      ]
+                    },
+                    "2": {
+                      "name": "variable.parameter.jcl"
+                    }
+                  }
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.other.jcl"
+            },
+            "3": {
+              "name": "comment.line.double-slash.jcl"
+            }
+          },
+          "contentName": "variable.parameter.jcl"
+        },
+        {
+          "begin": "([^*]\\S*)?\\s+(IF)\\s",
+          "end": "(.*)(THEN)(.*)",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#labels"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.other.jcl"
+            }
+          },
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "match": "(\\/\\/)?(.*)",
+                  "captures": {
+                    "1": {
+                      "patterns": [
+                        {
+                          "include": "#labels"
+                        }
+                      ]
+                    },
+                    "2": {
+                      "name": "variable.parameter.jcl"
+                    }
+                  }
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.other.jcl"
+            },
+            "3": {
+              "name": "comment.line.double-slash.jcl"
+            }
+          },
+          "contentName": "variable.parameter.jcl"
+        },
+        {
+          "match": "([^*]\\S*)?\\s+(.*)",
           "captures": {
             "1": {
               "name": "entity.name.function.jcl"
@@ -180,8 +268,8 @@
       ]
     },
     "labels": {
-      "match": "[*]",
-      "name": "support.function.jcl"
+      "match": ".*",
+      "name": "entity.name.function.jcl"
     },
     "operators": {
       "match": "[=(),+]",

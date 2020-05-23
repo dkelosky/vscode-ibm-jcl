@@ -4,6 +4,8 @@
 # https://macromates.com/manual/en/language_grammars#naming-conventions
 # https://www.apeth.com/nonblog/stories/textmatebundle.html
 
+# https://github.com/PanAeon/vscode-tmgrammar-test
+
 name: Job Control Language
 patterns:
   - include: "#jcl_syntax"
@@ -16,118 +18,183 @@ repository:
       - include: "#lineComment"
       - include: "#parseLine"
       - include: "#jclLineStart"
+
   additionaljclHighlight:
     patterns:
-      - include: "#labels"
+      # - include: "#labels"
       - include: "#operators"
       - include: "#numbers"
 
-  #  
+  #
   # Handles basic syntax error cases
-  #  
+  #
   lineTooLong:
     # TODO(Kelosky): this probably isn't true for all JCL, especially for //SYSIN
     # content sent through z/OSMF.
     patterns:
       - name: invalid.illegal.jcl
-        match: "^.{81,}"
-  
+        match: ^.{81,}
+
   #
   # Handle comments - all statements that have a `//*` in column 1
   #
   lineComment:
     patterns:
       # First, if `//*` and 69 characters follow and 8 more treat as comment and sequence
-      - match: "^(\\/\\/\\*.{69,69})(.*)"
+      - match: ^(\/\/\*.{69,69})(.*)
         name: comment.line.double-slash.jcl
         captures:
-          "1":
+          1:
             name: comment.line.double-slash.jcl
-          "2":
+          2:
             patterns:
               - include: "#sequenceNumbers"
       # Else, treat entire line as comment
-      - match: "\\/\\/\\*.*"
+      - match: \/\/\*.*
         name: comment.line.double-slash.jcl
-  
+
   #
   # Handle a line with and without sequence numbers
   #
   parseLine:
     patterns:
       # parse off line of JCL and sequence numbers
-      - match: "^(.{72,72})(.{0,8})"
+      - match: ^(.{72,72})(.{0,8})
         captures:
-          "1":
+          1:
             # line of JCL
             patterns:
               - include: "#jclLineStart"
-          "2":
+          2:
             # sequence numbers
             patterns:
               - include: "#sequenceNumbers"
-  
+
   #
   # Handle a line of JCL
   #
   jclLineStart:
     patterns:
-      - match: "^([^*]\\S*)?\\s+(.*)$"
+      - begin: ([^*]\S*)?\s+(DD\s+\*)\s(.*)
+        end: (.*)(^\/\*)(.*)
+        beginCaptures:
+          1:
+            # name: entity.name.function.jcl
+            patterns:
+              - include: "#labels"
+          2:
+            name: keyword.other.jcl
+          3:
+            name: comment.line.double-slash.jcl
+        endCaptures:
+          1:
+            patterns:
+              - match: (\/\/)?(.*)
+                captures:
+                  1:
+                    patterns:
+                      - include: "#labels"
+                  2:
+                    name: variable.parameter.jcl
+          2:
+            name: keyword.other.jcl
+          3:
+            name: comment.line.double-slash.jcl
+        contentName: variable.parameter.jcl
+      - begin: ([^*]\S*)?\s+(IF)\s
+        end: (.*)(THEN)(.*)
+        beginCaptures:
+          1:
+            # name: entity.name.function.jcl
+            patterns:
+              - include: "#labels"
+          2:
+            name: keyword.other.jcl
+        endCaptures:
+          1:
+            patterns:
+              - match: (\/\/)?(.*)
+                captures:
+                  1:
+                    patterns:
+                      - include: "#labels"
+                  2:
+                    name: variable.parameter.jcl
+          2:
+            name: keyword.other.jcl
+          3:
+            name: comment.line.double-slash.jcl
+        contentName: variable.parameter.jcl
+      - match: ([^*]\S*)?\s+(.*)
         captures:
-          "1":
+          1:
             # The label for a line.
             name: entity.name.function.jcl
-          "2":
+          2:
             # The assembler instructions for this statement
             patterns:
               - include: "#jclInstruction"
+
   jclInstruction:
     #  A simple assembler source statement with 3 things. An instruction,
     #  parameters, and comment
     patterns:
-      - match: "(\\S+)\\s*(.*)"
+      # - match: "(IF\\s)(.*)(THEN|OR)(.*)"
+      #   name: keyword.control.jcl
+      #   captures:
+      #     1:
+      #       name: keyword.other.jcl
+      #     2:
+      #       name: keyword.operator.jcl
+      #     3:
+      #       name: keyword.other.jcl
+      #     4:
+      #       patterns:
+      #         - include: "#jclArguments"
+      - match: (\S+)\s*(.*)
         captures:
-          "1":
+          1:
             name: keyword.other.jcl
-          "2":
+          2:
             patterns:
               - include: "#jclArguments"
+
   jclArguments:
     patterns:
       - include: "#stringType"
       # Handle no strings in instruction
-      - match: "(\\S*)(.*)"
+      - match: (\S*)(.*)
         captures:
-          "1":
+          1:
             # This group refers to an instruction operator
             name: keyword.control.jcl
             patterns:
               - include: "#additionaljclHighlight"
-          "2":
+          2:
             # The rest of the line is a comment.
             name: comment.line.double-slash.jcl
   stringType:
     patterns:
       - # Handle strings in an instruction
-        match: "(\\S*?)('.*?')(.*)"
+        match: (\S*?)('.*?')(.*)
         captures:
-          "1":
+          1:
             # This group refers to an instruction operator
             name: keyword.control.jcl
             patterns:
               - include: "#additionaljclHighlight"
-          "2":
+          2:
             #  A string was found, so we can't be sure this is the end of
             #  the line
             name: string.quoted.single.jcl
-          "3":
+          3:
             # Recursively call this rule to get all patterns.
             patterns:
               - include: "#jclArguments"
   labels:
-    # marks special labels in the code
-    match: "[*]"
-    name: support.function.jcl
+    # marks labels in the code
+    match: ".*"
+    name: entity.name.function.jcl
   operators:
     # marks operators properly
     match: "[=(),+]"

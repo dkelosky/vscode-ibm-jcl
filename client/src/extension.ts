@@ -58,8 +58,9 @@ export function activate(context: ExtensionContext) {
     // Start the client. This will also launch the server
     client.start();
 
-    context.subscriptions.push(
-        languages.registerDocumentSemanticTokensProvider({ language: "jcl"}, new DocumentSemanticTokensProvider(), legend));
+    // TODO(Kelosky): refine errors
+    // context.subscriptions.push(
+    //     languages.registerDocumentSemanticTokensProvider({ language: "jcl"}, new DocumentSemanticTokensProvider(), legend));
 }
 
 export function deactivate(): Thenable<void> | undefined {
