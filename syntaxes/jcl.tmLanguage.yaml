@@ -41,7 +41,7 @@ repository:
   lineComment:
     patterns:
       # First, if `//*` and 69 characters follow and 8 more treat as comment and sequence
-      - match: ^(\/\/\*.{69,69})(.*)
+      - match: (\/\/\*.{69,69})(.*)
         name: comment.line.double-slash.jcl
         captures:
           1:
@@ -59,7 +59,7 @@ repository:
   parseLine:
     patterns:
       # parse off line of JCL and sequence numbers
-      - match: ^(.{72,72})(.{0,8})
+      - match: (.{72,72})(.{0,8})
         captures:
           1:
             # line of JCL
@@ -75,7 +75,8 @@ repository:
   #
   jclLineStart:
     patterns:
-      - begin: ([^*]\S*)?\s+(DD\s+\*)\s(.*)
+      # Match DD * and parms
+      - begin: ([^*]\S*)?\s+(DD\s+\*\S*?)\s(.*)
         end: (.*)(^\/\*)(.*)
         beginCaptures:
           1:
@@ -139,18 +140,6 @@ repository:
     #  A simple assembler source statement with 3 things. An instruction,
     #  parameters, and comment
     patterns:
-      # - match: "(IF\\s)(.*)(THEN|OR)(.*)"
-      #   name: keyword.control.jcl
-      #   captures:
-      #     1:
-      #       name: keyword.other.jcl
-      #     2:
-      #       name: keyword.operator.jcl
-      #     3:
-      #       name: keyword.other.jcl
-      #     4:
-      #       patterns:
-      #         - include: "#jclArguments"
       - match: (\S+)\s*(.*)
         captures:
           1:
