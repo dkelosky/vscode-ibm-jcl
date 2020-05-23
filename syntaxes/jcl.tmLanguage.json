@@ -91,7 +91,7 @@
     "jclLineStart": {
       "patterns": [
         {
-          "begin": "([^*]\\S*)?\\s+(DD\\s+\\*)\\s(.*)",
+          "begin": "([^*]\\S*)?\\s+(DD\\s+\\*\\S*?)\\s(.*)",
           "end": "(.*)(^\\/\\*)(.*)",
           "beginCaptures": {
             "1": {

@@ -75,7 +75,8 @@ repository:
   #
   jclLineStart:
     patterns:
-      - begin: ([^*]\S*)?\s+(DD\s+\*)\s(.*)
+      # Match DD * and parms
+      - begin: ([^*]\S*)?\s+(DD\s+\*\S*?)\s(.*)
         end: (.*)(^\/\*)(.*)
         beginCaptures:
           1:
@@ -139,18 +140,6 @@ repository:
     #  A simple assembler source statement with 3 things. An instruction,
     #  parameters, and comment
     patterns:
-      # - match: "(IF\\s)(.*)(THEN|OR)(.*)"
-      #   name: keyword.control.jcl
-      #   captures:
-      #     1:
-      #       name: keyword.other.jcl
-      #     2:
-      #       name: keyword.operator.jcl
-      #     3:
-      #       name: keyword.other.jcl
-      #     4:
-      #       patterns:
-      #         - include: "#jclArguments"
       - match: (\S+)\s*(.*)
         captures:
           1:
