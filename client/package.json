@@ -10,16 +10,12 @@
         "url": "https://github.com/dkelosky/vscode-ibm-jcl"
     },
     "engines": {
-        "vscode": "^1.28.0"
-    },
-    "scripts": {
-        "update-vscode": "vscode-install",
-        "postinstall": "vscode-install"
+        "vscode": "^1.41.0"
     },
     "dependencies": {
         "vscode-languageclient": "^4.1.4"
     },
     "devDependencies": {
-        "vscode": "^1.1.35"
+        "@types/vscode": "^1.45.1"
     }
 }

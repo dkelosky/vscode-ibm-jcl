@@ -148,54 +148,9 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
                 message: `Exceeded ${MAX_LEN} characters`,
                 source: "jcl"
             };
-            // if (hasDiagnosticRelatedInformationCapability) {
-            //     diagnostic.relatedInformation = [
-            //         {
-            //             location: {
-            //                 uri: textDocument.uri,
-            //                 range: Object.assign({}, diagnostic.range)
-            //             },
-            //             message: 'Spelling matters'
-            //         },
-            //         {
-            //             location: {
-            //                 uri: textDocument.uri,
-            //                 range: Object.assign({}, diagnostic.range)
-            //             },
-            //             message: 'Particularly for names'
-            //         }
-            //     ];
-            // }
+
             diagnostics.push(diagnostic);
         }
-
-        // const tokenizedLine = lines[i].replace(/\s+/g, " ").split(" ");
-
-        // if (tokenizedLine.length > 0) {
-
-        //     let kind: SymbolKind = SymbolKind.Constant;
-
-        //     // TODO(Kelosky): if LABEL MVC -> this fails to capture
-        //     if (tokenizedLine[0]) {
-        //         if (tokenizedLine[0] === "MVC") {
-        //             kind = SymbolKind.Object;
-        //         }
-
-        //         if (!tokenizedLine[1]) {
-        //             // error missing arguments
-        //             const start = lines[i].indexOf(tokenizedLine[0]);
-        //             const diagnostic: Diagnostic = {
-        //                 severity: DiagnosticSeverity.Error,
-        //                 range: {
-        //                     start: { line: i, character: start },
-        //                     end: { line: i, character: start + tokenizedLine[0].length },
-        //                 },
-        //                 message: `Argument(s) missing for ${tokenizedLine[0]}`,
-        //                 source: "hlasm"
-        //             };
-        //         }
-        //     }
-        // }
 
     }
 
@@ -214,7 +169,6 @@ connection.onDocumentSymbol((parm) => {
     const lines = document.getText().split("\n");
     for (let i = 0; i < lines.length - 1; i++) {
 
-        // if space or * in column one, it's not a symbol
         if (lines[i][0] === "/" && lines[i][1] === "/" && lines[i][2] !== "*" && lines[i][2] !== " ") {
 
             // compress multiple spaces to a single space
@@ -225,17 +179,9 @@ connection.onDocumentSymbol((parm) => {
 
             if (tokenizedLine.length > 0) {
 
-                let kind: SymbolKind = SymbolKind.Constant;
-
-                if (tokenizedLine[1]) {
-                    if (tokenizedLine[1] === "DSECT") {
-                        kind = SymbolKind.Object;
-                    }
-                }
-
                 const entry: SymbolInformation = {
                     name: tokenizedLine[0],
-                    kind,
+                    kind: SymbolKind.Constant,
                     location: {
                         uri: parm.textDocument.uri,
                         range: {

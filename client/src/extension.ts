@@ -3,30 +3,31 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
-import * as path from 'path';
-import { workspace, ExtensionContext } from 'vscode';
+import * as path from "path";
+import { workspace, ExtensionContext, languages } from "vscode";
+import { DocumentSemanticTokensProvider, legend } from "./DocumentSemanticTokensProvider";
 
 import {
     LanguageClient,
     LanguageClientOptions,
     ServerOptions,
     TransportKind
-} from 'vscode-languageclient';
+} from "vscode-languageclient";
 
 let client: LanguageClient;
 
 export function activate(context: ExtensionContext) {
     // The server is implemented in node
-    let serverModule = context.asAbsolutePath(
-        path.join('server', 'out', 'server.js')
+    const serverModule = context.asAbsolutePath(
+        path.join("server", "out", "server.js")
     );
     // The debug options for the server
-    // --inspect=6009: runs the server in Node's Inspector mode so VS Code can attach to the server for debugging
-    let debugOptions = { execArgv: ['--nolazy', '--inspect=6010'] };
+    // --inspect=6009: runs the server in Node"s Inspector mode so VS Code can attach to the server for debugging
+    const debugOptions = { execArgv: ["--nolazy", "--inspect=6010"] };
 
     // If the extension is launched in debug mode then the debug server options are used
     // Otherwise the run options are used
-    let serverOptions: ServerOptions = {
+    const serverOptions: ServerOptions = {
         run: { module: serverModule, transport: TransportKind.ipc },
         debug: {
             module: serverModule,
@@ -36,26 +37,30 @@ export function activate(context: ExtensionContext) {
     };
 
     // Options to control the language client
-    let clientOptions: LanguageClientOptions = {
+    const clientOptions: LanguageClientOptions = {
         // Register the server for plain text documents
-        documentSelector: [{ scheme: 'file', language: 'jcl' }],
-        // documentSelector: [{ scheme: 'file', language: 'hlasm' }],
+        documentSelector: [{ scheme: "file", language: "jcl" }],
+        // documentSelector: [{ scheme: "file", language: "hlasm" }],
         synchronize: {
-            // Notify the server about file changes to '.clientrc files contained in the workspace
-            fileEvents: workspace.createFileSystemWatcher('**/.jcl')
+            // Notify the server about file changes to ".clientrc files contained in the workspace
+            fileEvents: workspace.createFileSystemWatcher("**/.jcl")
         }
     };
 
     // Create the language client and start the client.
     client = new LanguageClient(
-        'jclServer',
-        'JCL Server',
+        "jclServer",
+        "JCL Server",
         serverOptions,
         clientOptions
     );
 
     // Start the client. This will also launch the server
     client.start();
+
+    // TODO(Kelosky): refine errors
+    // context.subscriptions.push(
+    //     languages.registerDocumentSemanticTokensProvider({ language: "jcl"}, new DocumentSemanticTokensProvider(), legend));
 }
 
 export function deactivate(): Thenable<void> | undefined {

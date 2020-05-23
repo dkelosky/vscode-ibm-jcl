@@ -3,7 +3,7 @@
     "displayName": "ibm-jcl",
     "description": "IBM Job Control Language",
     "repository": "https://github.com/dkelosky/vscode-ibm-jcl",
-    "version": "0.5.0",
+    "version": "0.5.1",
     "keywords": [
         "z/OS",
         "s390",
@@ -14,13 +14,23 @@
     "publisher": "kelosky",
     "icon": "docs/images/icon.png",
     "engines": {
-        "vscode": "^1.28.0"
+        "vscode": "^1.41.0"
     },
     "categories": [
         "Programming Languages"
     ],
     "main": "./client/out/extension",
     "contributes": {
+        "semanticTokenScopes": [
+            {
+                "language": "jcl",
+                "scopes": {
+                    "what": [
+                        "invalid.illegal.jcl"
+                    ]
+                }
+            }
+        ],
         "configuration": {
             "type": "object",
             "title": "JCL configuration",
@@ -42,6 +52,15 @@
                     "default": "off",
                     "description": "Traces the communication between VS Code and the language server."
                 }
+            }
+        },
+        "configurationDefaults": {
+            "[jcl]": {
+                "editor.autoIndent": "none",
+                "editor.rulers": [
+                    72,
+                    80
+                ]
             }
         },
         "languages": [
@@ -73,16 +92,19 @@
         "vscode:prepublish": "npm run build:syntax && cd client && npm run update-vscode && cd .. && npm run compile",
         "compile": "tsc -b",
         "watch": "tsc -b -w",
+        "lint": "eslint . --ext ts",
         "build:syntax": "js-yaml syntaxes/jcl.tmLanguage.yaml > syntaxes/jcl.tmLanguage.json",
         "postinstall": "cd client && npm install && cd ../server && npm install && cd .."
     },
     "devDependencies": {
         "@types/jest": "^24.0.16",
-        "@types/node": "^8.0.0",
+        "@types/node": "^12.12.0",
+        "@typescript-eslint/eslint-plugin": "^2.34.0",
+        "@typescript-eslint/parser": "^2.34.0",
+        "eslint": "^7.0.0",
         "jest": "^24.8.0",
         "js-yaml": "^3.13.1",
         "ts-jest": "^24.0.2",
-        "tslint": "^5.16.0",
-        "typescript": "^3.5.1"
+        "typescript": "^3.8.3"
     }
 }
