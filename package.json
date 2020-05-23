@@ -2,7 +2,10 @@
     "name": "ibm-jcl",
     "displayName": "ibm-jcl",
     "description": "IBM Job Control Language",
-    "repository": "https://github.com/dkelosky/vscode-ibm-jcl",
+    "repository": {
+        "url": "https://github.com/dkelosky/vscode-ibm-jcl",
+        "type": "git"
+    },
     "version": "0.7.0",
     "keywords": [
         "z/OS",
@@ -12,7 +15,7 @@
         "job control language"
     ],
     "publisher": "kelosky",
-    "icon": "extension/images/icon.png",
+    "icon": "images/icon.png",
     "engines": {
         "vscode": "^1.41.0"
     },
@@ -89,7 +92,6 @@
         "onLanguage:jcl"
     ],
     "scripts": {
-        "vscode:prepublish": "npm run compile",
         "compile": "tsc -b",
         "watch": "tsc -b -w",
         "lint": "eslint . --ext ts",
