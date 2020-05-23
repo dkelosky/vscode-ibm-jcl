@@ -15,7 +15,7 @@
         "job control language"
     ],
     "publisher": "kelosky",
-    "icon": "images/icon.png",
+    "icon": "docs/images/icon.png",
     "engines": {
         "vscode": "^1.41.0"
     },
