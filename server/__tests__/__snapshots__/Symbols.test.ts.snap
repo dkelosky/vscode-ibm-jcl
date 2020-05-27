@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Symbols tests should have no symbols 1`] = `Array []`;
+
+exports[`Symbols tests should have one symbol 1`] = `
+Array [
+  Object {
+    "kind": 14,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 6,
+          "line": 0,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 0,
+        },
+      },
+      "uri": "/nowhere",
+    },
+    "name": "//HELLO",
+  },
+]
+`;
