@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Settings tests should get default settings 1`] = `
+Object {
+  "maxNumberOfProblems": 1000,
+}
+`;
+
+exports[`Settings tests should get specific settings 1`] = `
+Object {
+  "maxNumberOfProblems": 8,
+}
+`;
