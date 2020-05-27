@@ -91,6 +91,31 @@
     "jclLineStart": {
       "patterns": [
         {
+          "include": "#inlineDD"
+        },
+        {
+          "include": "#conditionals"
+        },
+        {
+          "match": "([^*]\\S*)?\\s+(.*)",
+          "captures": {
+            "1": {
+              "name": "entity.name.function.jcl"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#jclStatement"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "inlineDD": {
+      "patterns": [
+        {
           "begin": "([^*]\\S*)?\\s+(DD\\s+\\*\\S*?)\\s(.*)",
           "end": "(.*)(^\\/\\*)(.*)",
           "beginCaptures": {
@@ -136,7 +161,11 @@
             }
           },
           "contentName": "variable.parameter.jcl"
-        },
+        }
+      ]
+    },
+    "conditionals": {
+      "patterns": [
         {
           "begin": "([^*]\\S*)?\\s+(IF)\\s",
           "end": "(.*)(THEN)(.*)",
@@ -180,25 +209,10 @@
             }
           },
           "contentName": "variable.parameter.jcl"
-        },
-        {
-          "match": "([^*]\\S*)?\\s+(.*)",
-          "captures": {
-            "1": {
-              "name": "entity.name.function.jcl"
-            },
-            "2": {
-              "patterns": [
-                {
-                  "include": "#jclInstruction"
-                }
-              ]
-            }
-          }
         }
       ]
     },
-    "jclInstruction": {
+    "jclStatement": {
       "patterns": [
         {
           "match": "(\\S+)\\s*(.*)",

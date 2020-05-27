@@ -123,7 +123,6 @@ export class JCLServer {
         // Send the computed diagnostics to VSCode.
         this.connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 
-        this.connection.console.log("hey f you")
     }
 
 }

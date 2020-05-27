@@ -21,7 +21,6 @@ repository:
 
   additionaljclHighlight:
     patterns:
-      # - include: "#labels"
       - include: "#operators"
       - include: "#numbers"
 
@@ -75,33 +74,50 @@ repository:
   #
   jclLineStart:
     patterns:
-      # Match DD * and parms
-      - begin: ([^*]\S*)?\s+(DD\s+\*\S*?)\s(.*)
-        end: (.*)(^\/\*)(.*)
-        beginCaptures:
+      - include: "#inlineDD"
+      - include: "#conditionals"
+      - match: ([^*]\S*)?\s+(.*)
+        captures:
           1:
-            # name: entity.name.function.jcl
-            patterns:
-              - include: "#labels"
+            # The label for a line.
+            name: entity.name.function.jcl
           2:
-            name: keyword.other.jcl
-          3:
-            name: comment.line.double-slash.jcl
-        endCaptures:
-          1:
+            # The statement
             patterns:
-              - match: (\/\/)?(.*)
-                captures:
-                  1:
-                    patterns:
-                      - include: "#labels"
-                  2:
-                    name: variable.parameter.jcl
-          2:
-            name: keyword.other.jcl
-          3:
-            name: comment.line.double-slash.jcl
-        contentName: variable.parameter.jcl
+              - include: "#jclStatement"
+
+  inlineDD:
+      patterns:
+        # Match DD * and parms
+        - begin: ([^*]\S*)?\s+(DD\s+\*\S*?)\s(.*)
+          end: (.*)(^\/\*)(.*)
+          beginCaptures:
+            1:
+              # name: entity.name.function.jcl
+              patterns:
+                - include: "#labels"
+            2:
+              name: keyword.other.jcl
+            3:
+              name: comment.line.double-slash.jcl
+          endCaptures:
+            1:
+              patterns:
+                - match: (\/\/)?(.*)
+                  captures:
+                    1:
+                      patterns:
+                        - include: "#labels"
+                    2:
+                      name: variable.parameter.jcl
+            2:
+              name: keyword.other.jcl
+            3:
+              name: comment.line.double-slash.jcl
+          contentName: variable.parameter.jcl
+
+  conditionals:
+    patterns:
       - begin: ([^*]\S*)?\s+(IF)\s
         end: (.*)(THEN)(.*)
         beginCaptures:
@@ -126,18 +142,9 @@ repository:
           3:
             name: comment.line.double-slash.jcl
         contentName: variable.parameter.jcl
-      - match: ([^*]\S*)?\s+(.*)
-        captures:
-          1:
-            # The label for a line.
-            name: entity.name.function.jcl
-          2:
-            # The assembler instructions for this statement
-            patterns:
-              - include: "#jclInstruction"
 
-  jclInstruction:
-    #  A simple assembler source statement with 3 things. An instruction,
+  jclStatement:
+    #  A simple source statement with 3 things. A statement,
     #  parameters, and comment
     patterns:
       - match: (\S+)\s*(.*)
@@ -151,11 +158,11 @@ repository:
   jclArguments:
     patterns:
       - include: "#stringType"
-      # Handle no strings in instruction
+      # Handle no strings in statement
       - match: (\S*)(.*)
         captures:
           1:
-            # This group refers to an instruction operator
+            # This group refers to an statement operator
             name: keyword.control.jcl
             patterns:
               - include: "#additionaljclHighlight"
@@ -164,11 +171,11 @@ repository:
             name: comment.line.double-slash.jcl
   stringType:
     patterns:
-      - # Handle strings in an instruction
+      - # Handle strings in an statement
         match: (\S*?)('.*?')(.*)
         captures:
           1:
-            # This group refers to an instruction operator
+            # This group refers to an statement operator
             name: keyword.control.jcl
             patterns:
               - include: "#additionaljclHighlight"
