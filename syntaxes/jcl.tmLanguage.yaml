@@ -2,8 +2,7 @@
 "$schema": https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
 
 # https://macromates.com/manual/en/language_grammars#naming-conventions
-# https://www.apeth.com/nonblog/stories/textmatebundle.html
-
+# https://macromates.com/manual/en/appendix#property-list-format
 # https://github.com/PanAeon/vscode-tmgrammar-test
 
 name: Job Control Language
@@ -116,10 +115,14 @@ repository:
               name: comment.line.double-slash.jcl
           contentName: variable.parameter.jcl
 
+
   conditionals:
     patterns:
       - begin: ([^*]\S*)?\s+(IF)\s
         end: (.*)(THEN)(.*)
+
+          # - match: .*
+          #   name: variable.parameter.jcl
         beginCaptures:
           1:
             # name: entity.name.function.jcl
@@ -136,7 +139,7 @@ repository:
                     patterns:
                       - include: "#labels"
                   2:
-                    name: variable.parameter.jcl
+                        name: variable.parameter.jcl
           2:
             name: keyword.other.jcl
           3:
