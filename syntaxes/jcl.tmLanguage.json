@@ -110,12 +110,39 @@
           "match": "([^*]\\S*)?\\s+(.*)",
           "captures": {
             "1": {
-              "name": "entity.name.function.jcl"
+              "patterns": [
+                {
+                  "include": "#labels"
+                }
+              ]
             },
             "2": {
               "patterns": [
                 {
                   "include": "#jclStatement"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "jclLineContinued": {
+      "patterns": [
+        {
+          "match": "(\\/\\/)(\\s+)(.*)",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#labels"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#jclArguments"
                 }
               ]
             }
@@ -225,13 +252,34 @@
     "continuation": {
       "patterns": [
         {
-          "begin": "(([^*]\\S*)?\\s+(.*),\\s+)",
-          "end": "(\\/\\/)\\s+\\S+[^,]\\s+.*",
+          "begin": "^(([^*]\\S*)?\\s+(\\S+)\\s+.*,)$",
+          "end": "(\\/\\/)(\\s+)(\\S+[^,]\\s+.*)",
+          "patterns": [
+            {
+              "include": "#jclLineContinued"
+            }
+          ],
           "beginCaptures": {
             "1": {
               "patterns": [
                 {
                   "include": "#jclLineReuse"
+                }
+              ]
+            }
+          },
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#labels"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#jclArguments"
                 }
               ]
             }
