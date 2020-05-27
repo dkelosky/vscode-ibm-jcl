@@ -169,6 +169,7 @@ repository:
           2:
             # The rest of the line is a comment.
             name: comment.line.double-slash.jcl
+
   stringType:
     patterns:
       - # Handle strings in an statement
