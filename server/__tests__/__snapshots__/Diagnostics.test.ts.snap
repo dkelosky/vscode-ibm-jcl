@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Diagnostics tests should give back a diagnostic error for a line that is too long 1`] = `
+Array [
+  Object {
+    "message": "Exceeded 80 characters",
+    "range": Object {
+      "end": Object {
+        "character": 80,
+        "line": 0,
+      },
+      "start": Object {
+        "character": 80,
+        "line": 0,
+      },
+    },
+    "severity": 1,
+    "source": "jcl",
+  },
+]
+`;
+
+exports[`Diagnostics tests should give back one diagnostic error for two lines that are too long if setting max is reached 1`] = `
+Array [
+  Object {
+    "message": "Exceeded 80 characters",
+    "range": Object {
+      "end": Object {
+        "character": 80,
+        "line": 0,
+      },
+      "start": Object {
+        "character": 80,
+        "line": 0,
+      },
+    },
+    "severity": 1,
+    "source": "jcl",
+  },
+]
+`;
+
+exports[`Diagnostics tests should not give back a diagnostic error for a line that is not too long 1`] = `
+Array [
+  Object {
+    "message": "Exceeded 80 characters",
+    "range": Object {
+      "end": Object {
+        "character": 80,
+        "line": 0,
+      },
+      "start": Object {
+        "character": 80,
+        "line": 0,
+      },
+    },
+    "severity": 1,
+    "source": "jcl",
+  },
+]
+`;
