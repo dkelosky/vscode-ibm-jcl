@@ -4,6 +4,7 @@
 # https://macromates.com/manual/en/language_grammars#naming-conventions
 # https://macromates.com/manual/en/appendix#property-list-format
 # https://github.com/PanAeon/vscode-tmgrammar-test
+# https://srinimf.com/2017/12/08/jcl-three-popular-ideas-to-continuation/
 
 name: Job Control Language
 patterns:
@@ -30,7 +31,7 @@ repository:
     # TODO(Kelosky): this probably isn't true for all JCL, especially for //SYSIN
     # content sent through z/OSMF.
     patterns:
-      - name: invalid.illegal.jcl
+      - name: invalid.illegal.jcl #red
         match: ^.{81,}
 
   #
@@ -40,7 +41,7 @@ repository:
     patterns:
       # First, if `//*` and 69 characters follow and 8 more treat as comment and sequence
       - match: (\/\/\*.{69,69})(.*)
-        name: comment.line.double-slash.jcl
+        name: comment.line.double-slash.jcl #green
         captures:
           1:
             name: comment.line.double-slash.jcl
@@ -75,16 +76,24 @@ repository:
     patterns:
       - include: "#inlineDD"
       - include: "#conditionals"
+      - include: "#continuation"
+      - include: "#jclLineReuse"
+
+  jclLineReuse:
+    patterns:
       - match: ([^*]\S*)?\s+(.*)
         captures:
           1:
             # The label for a line.
-            name: entity.name.function.jcl
+            name: entity.name.function.jcl #yello
           2:
             # The statement
             patterns:
               - include: "#jclStatement"
 
+  #
+  # Handle inline DD
+  #
   inlineDD:
       patterns:
         # Match DD * and parms
@@ -115,7 +124,9 @@ repository:
               name: comment.line.double-slash.jcl
           contentName: variable.parameter.jcl
 
-
+  #
+  # Handle IF THEN conditionals
+  #
   conditionals:
     patterns:
       - begin: ([^*]\S*)?\s+(IF)\s
@@ -141,10 +152,47 @@ repository:
                   2:
                         name: variable.parameter.jcl
           2:
-            name: keyword.other.jcl
+            name: keyword.other.jcl #dark blue
           3:
             name: comment.line.double-slash.jcl
         contentName: variable.parameter.jcl
+
+  #
+  # Handle continuation
+  # keyword.control.jcl
+  continuation:
+    patterns:
+      - begin: (([^*]\S*)?\s+(.*),\s+)
+        end: (\/\/)\s+\S+[^,]\s+.*
+        beginCaptures:
+          1:
+            # name: entity.name.function.jcl
+            patterns:
+              - include: "#jclLineReuse"
+          # 2:
+          #   name: keyword.control.jcl #purple
+        #     # name: entity.name.function.jcl
+        #     patterns:
+        #       - include: "#labels"
+        #   2:
+        #     name: keyword.control.jcl
+        #   3:
+        #     name: comment.line.double-slash.jcl
+        # endCaptures:
+        #   1:
+        #     patterns:
+        #       - match: (\/\/)?(.*)
+        #         captures:
+        #           1:
+        #             patterns:
+        #               - include: "#labels"
+        #           2:
+        #             name: variable.parameter.jcl
+        #   2:
+        #     name: keyword.other.jcl
+        #   3:
+        #     name: comment.line.double-slash.jcl
+        # contentName: variable.parameter.jcl
 
   jclStatement:
     #  A simple source statement with 3 things. A statement,
@@ -153,7 +201,7 @@ repository:
       - match: (\S+)\s*(.*)
         captures:
           1:
-            name: keyword.other.jcl
+            name: keyword.other.jcl #darkblue
           2:
             patterns:
               - include: "#jclArguments"
@@ -166,7 +214,7 @@ repository:
         captures:
           1:
             # This group refers to an statement operator
-            name: keyword.control.jcl
+            name: keyword.control.jcl #purple
             patterns:
               - include: "#additionaljclHighlight"
           2:

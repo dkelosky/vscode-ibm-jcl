@@ -97,6 +97,16 @@
           "include": "#conditionals"
         },
         {
+          "include": "#continuation"
+        },
+        {
+          "include": "#jclLineReuse"
+        }
+      ]
+    },
+    "jclLineReuse": {
+      "patterns": [
+        {
           "match": "([^*]\\S*)?\\s+(.*)",
           "captures": {
             "1": {
@@ -209,6 +219,23 @@
             }
           },
           "contentName": "variable.parameter.jcl"
+        }
+      ]
+    },
+    "continuation": {
+      "patterns": [
+        {
+          "begin": "(([^*]\\S*)?\\s+(.*),\\s+)",
+          "end": "(\\/\\/)\\s+\\S+[^,]\\s+.*",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#jclLineReuse"
+                }
+              ]
+            }
+          }
         }
       ]
     },
