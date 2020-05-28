@@ -30,6 +30,9 @@
         },
         {
           "include": "#numbers"
+        },
+        {
+          "include": "#variables"
         }
       ]
     },
@@ -197,7 +200,7 @@
               "name": "comment.line.double-slash.jcl"
             }
           },
-          "contentName": "variable.parameter.jcl"
+          "contentName": "string.quoted.other.jcl"
         }
       ]
     },
@@ -324,6 +327,24 @@
             },
             "2": {
               "name": "comment.line.double-slash.jcl"
+            }
+          }
+        }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        {
+          "match": "([&%?])(?!=\\1)(.{,8}?)(\\.?)((?=\\W)|$)",
+          "captures": {
+            "1": {
+              "name": "punctuation.definition.variable"
+            },
+            "2": {
+              "name": "variable.other"
+            },
+            "3": {
+              "name": "punctuation.definition.variable"
             }
           }
         }
