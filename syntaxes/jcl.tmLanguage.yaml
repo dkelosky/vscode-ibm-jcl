@@ -252,6 +252,8 @@ repository:
             #  A string was found, so we can't be sure this is the end of
             #  the line
             name: string.quoted.single.jcl
+            patterns:
+              - include: "#variables"
           3:
             # Recursively call this rule to get all patterns.
             patterns:

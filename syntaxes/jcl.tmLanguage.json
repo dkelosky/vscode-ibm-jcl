@@ -364,7 +364,12 @@
               ]
             },
             "2": {
-              "name": "string.quoted.single.jcl"
+              "name": "string.quoted.single.jcl",
+              "patterns": [
+                {
+                  "include": "#variables"
+                }
+              ]
             },
             "3": {
               "patterns": [
