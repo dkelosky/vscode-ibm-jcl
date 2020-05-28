@@ -335,7 +335,7 @@
     "variables": {
       "patterns": [
         {
-          "match": "([&%?])(?!=\\1)(.{,8}?)(\\.?)((?=\\W)|$)",
+          "match": "((?<!&)&|[%?])(.{,8}?)(\\.?)((?=\\W)|$)",
           "captures": {
             "1": {
               "name": "punctuation.definition.variable"
