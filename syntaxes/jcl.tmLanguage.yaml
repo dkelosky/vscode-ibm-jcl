@@ -23,6 +23,7 @@ repository:
     patterns:
       - include: "#operators"
       - include: "#numbers"
+      - include: "#variables"
 
   #
   # Handles basic syntax error cases
@@ -136,7 +137,7 @@ repository:
               name: keyword.other.jcl
             3:
               name: comment.line.double-slash.jcl
-          contentName: variable.parameter.jcl
+          contentName: string.quoted.other.jcl
 
   #
   # Handle IF THEN conditionals
@@ -226,6 +227,17 @@ repository:
             # The rest of the line is a comment.
             name: comment.line.double-slash.jcl
 
+  variables:
+    patterns:
+      - match: ((?<!&)&|[%?])(.{,8}?)(\.?)((?=\W)|$)
+        captures:
+          1:
+            name: punctuation.definition.variable
+          2:
+            name: variable.other
+          3:
+            name: punctuation.definition.variable
+
   stringType:
     patterns:
       - # Handle strings in an statement
@@ -240,6 +252,8 @@ repository:
             #  A string was found, so we can't be sure this is the end of
             #  the line
             name: string.quoted.single.jcl
+            patterns:
+              - include: "#variables"
           3:
             # Recursively call this rule to get all patterns.
             patterns:
