@@ -130,29 +130,6 @@
         }
       ]
     },
-    "jclLineContinued": {
-      "patterns": [
-        {
-          "match": "(\\/\\/)(\\s+)(.*)",
-          "captures": {
-            "1": {
-              "patterns": [
-                {
-                  "include": "#labels"
-                }
-              ]
-            },
-            "3": {
-              "patterns": [
-                {
-                  "include": "#jclArguments"
-                }
-              ]
-            }
-          }
-        }
-      ]
-    },
     "inlineDD": {
       "patterns": [
         {
@@ -207,8 +184,53 @@
     "conditionals": {
       "patterns": [
         {
-          "begin": "([^*]\\S*)?\\s+(IF)\\s",
-          "end": "(.*)(THEN)(.*)",
+          "match": "^([^*]\\S*)?\\s+(IF)\\s+(.*)(THEN)\\s+(.*)$",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#labels"
+                }
+              ]
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#conditional"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#conditionalControl"
+                }
+              ]
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#conditional"
+                }
+              ]
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#comments"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "begin": "^([^*]\\S*)?\\s+(IF)\\s",
+          "end": "^(\\/\\/)(.*)(THEN)\\s+(.*)",
+          "patterns": [
+            {
+              "include": "#conditionalLine"
+            }
+          ],
           "beginCaptures": {
             "1": {
               "patterns": [
@@ -218,37 +240,81 @@
               ]
             },
             "2": {
-              "name": "keyword.other.jcl"
+              "patterns": [
+                {
+                  "include": "#conditional"
+                }
+              ]
             }
           },
           "endCaptures": {
             "1": {
               "patterns": [
                 {
-                  "match": "(\\/\\/)?(.*)",
-                  "captures": {
-                    "1": {
-                      "patterns": [
-                        {
-                          "include": "#labels"
-                        }
-                      ]
-                    },
-                    "2": {
-                      "name": "variable.parameter.jcl"
-                    }
-                  }
+                  "include": "#labels"
                 }
               ]
             },
             "2": {
-              "name": "keyword.other.jcl"
+              "patterns": [
+                {
+                  "include": "#conditionalControl"
+                }
+              ]
             },
             "3": {
+              "patterns": [
+                {
+                  "include": "#conditional"
+                }
+              ]
+            },
+            "4": {
               "name": "comment.line.double-slash.jcl"
             }
-          },
-          "contentName": "variable.parameter.jcl"
+          }
+        }
+      ]
+    },
+    "conditionalLine": {
+      "patterns": [
+        {
+          "match": "^(\\/\\/)?(\\s+)(.*)$",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#labels"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#conditionalControl"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "match": "(\\S+.*)$",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#conditionalControl"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "conditionalControl": {
+      "patterns": [
+        {
+          "include": "#control"
         }
       ]
     },
@@ -272,6 +338,29 @@
             }
           },
           "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#labels"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#jclArguments"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "jclLineContinued": {
+      "patterns": [
+        {
+          "match": "(\\/\\/)(\\s+)(.*)",
+          "captures": {
             "1": {
               "patterns": [
                 {
@@ -386,6 +475,14 @@
       "match": ".*",
       "name": "entity.name.function.jcl"
     },
+    "conditional": {
+      "match": ".*",
+      "name": "keyword.other.jcl"
+    },
+    "control": {
+      "match": ".*",
+      "name": "variable.parameter.jcl"
+    },
     "operators": {
       "match": "[=(),+]",
       "name": "keyword.operator.jcl"
@@ -395,8 +492,12 @@
       "name": "constant.numeric.jcl"
     },
     "sequenceNumbers": {
-      "name": "constant.numeric.jcl",
-      "match": ".*"
+      "match": ".*",
+      "name": "constant.numeric.jcl"
+    },
+    "comments": {
+      "match": ".*",
+      "name": "comment.line.double-slash.jcl"
     }
   },
   "scopeName": "source.jcl"
