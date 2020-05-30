@@ -137,7 +137,8 @@ repository:
               name: keyword.other.jcl
             3:
               name: comment.line.double-slash.jcl
-          contentName: string.quoted.other.jcl
+          # contentName: string.regexp.jcl # red
+          contentName: entity.name.type.jcl
 
   #
   # Handle IF THEN conditionals
@@ -147,11 +148,8 @@ repository:
       - begin: ([^*]\S*)?\s+(IF)\s
         end: (.*)(THEN)(.*)
 
-          # - match: .*
-          #   name: variable.parameter.jcl
         beginCaptures:
           1:
-            # name: entity.name.function.jcl
             patterns:
               - include: "#labels"
           2:
