@@ -2,6 +2,7 @@ import { Connection } from "vscode-languageserver";
 import { Capabilities } from "./Capabilities";
 
 export interface IJclSettings {
+    // This setting currently unused, but left for testing purposes
     maxNumberOfProblems: number;
 }
 
