@@ -1,4 +1,4 @@
-import { InitializeParams, TextDocuments, InitializeResult, createConnection, ProposedFeatures, Connection, DidChangeConfigurationNotification, DocumentSymbolParams, SymbolInformation, TextDocumentChangeEvent, TextDocument, Diagnostic, DidChangeConfigurationParams } from "vscode-languageserver";
+import { InitializeParams, TextDocuments, InitializeResult, createConnection, ProposedFeatures, Connection, DidChangeConfigurationNotification, DocumentSymbolParams, SymbolInformation, TextDocumentChangeEvent, TextDocument, Diagnostic, DidChangeConfigurationParams, PublishDiagnosticsParams } from "vscode-languageserver";
 import { Capabilities } from "./Capabilities";
 import { Settings } from "./Settings";
 import { Symbols } from "./Symbols";
@@ -9,8 +9,8 @@ export class JCLServer {
     public connection: Connection;
     public documents: TextDocuments;
 
-    private capabilities: Capabilities;
-    private settings: Settings;
+    protected capabilities: Capabilities;
+    protected settings: Settings;
 
     constructor() {
 
@@ -40,7 +40,7 @@ export class JCLServer {
         this.connection.listen();
     }
 
-    private initialize(params: InitializeParams): InitializeResult {
+    protected initialize(params: InitializeParams): InitializeResult {
 
         // set capabilities
         this.capabilities.init(params);
@@ -53,19 +53,19 @@ export class JCLServer {
         };
     }
 
-    private initialized(): void {
+    protected initialized(): void {
         if (this.capabilities.hasConfigurationCapability) {
             // Register for all configuration changes.
             this.connection.client.register(DidChangeConfigurationNotification.type, undefined);
         }
         if (this.capabilities.hasWorkspaceFolderCapability) {
-            this.connection.workspace.onDidChangeWorkspaceFolders((event) => {
+            this.connection.workspace.onDidChangeWorkspaceFolders(() => {
                 this.connection.console.error("Workspace folder change event received.");
             });
         }
     }
 
-    private didChangeConfiguration(change: DidChangeConfigurationParams): void {
+    protected didChangeConfiguration(change: DidChangeConfigurationParams): void {
         if (this.capabilities.hasConfigurationCapability) {
             // Reset all cached document settings
             this.settings.documentSettings.clear();
@@ -78,9 +78,9 @@ export class JCLServer {
         this.documents.all().forEach(this.validateTextDocument.bind(this));
     }
 
-    private documentSymbol(parm: DocumentSymbolParams): SymbolInformation[] | null {
+    protected documentSymbol(parm: DocumentSymbolParams): SymbolInformation[] | null {
         const document = this.documents.get(parm.textDocument.uri);
-       
+
         if (!document) {
             return null;
         }
@@ -88,41 +88,44 @@ export class JCLServer {
         return Symbols.parse(document);
     }
 
-    private documentsDidClose(change: TextDocumentChangeEvent): void {
+    protected documentsDidClose(change: TextDocumentChangeEvent): void {
         // Only keep settings for open documents
         this.settings.documentSettings.delete(change.document.uri);
     }
 
     // The content of a text document has changed. This event is emitted
     // when the text document first opened or when its content has changed.
-    private documentsDidChangeContent(change: TextDocumentChangeEvent): void {
+    protected documentsDidChangeContent(change: TextDocumentChangeEvent): void {
         this.validateTextDocument(change.document);
     }
 
-    private setDocumentsListeners(): void {
+    protected setDocumentsListeners(): void {
         this.documents.onDidClose(this.documentsDidClose.bind(this));
         this.documents.onDidChangeContent(this.documentsDidChangeContent.bind(this));
     }
 
-    private setConnectionListeners(): void {
+    protected setConnectionListeners(): void {
         this.connection.onInitialize(this.initialize.bind(this));
         this.connection.onInitialized(this.initialized.bind(this));
         this.connection.onDidChangeConfiguration(this.didChangeConfiguration.bind(this));
         this.connection.onDocumentSymbol(this.documentSymbol.bind(this));
     }
 
-    private async validateTextDocument(textDocument: TextDocument): Promise<void> {
+    protected async validateTextDocument(textDocument: TextDocument): Promise<void> {
 
         // In this simple example we get the settings for every validate run.
-        const settings = await this.settings.getDocumentSettings(textDocument.uri);
+        // const settings = await this.settings.getDocumentSettings(textDocument.uri);
 
         const diagnostics: Diagnostic[] = [];
 
-        Diagnostics.checkLengths(textDocument, diagnostics, settings.maxNumberOfProblems);
+        Diagnostics.checkLengths(textDocument, diagnostics);
 
         // Send the computed diagnostics to VSCode.
-        this.connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+        this.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 
     }
 
+    protected sendDiagnostics(params: PublishDiagnosticsParams): void {
+        this.connection.sendDiagnostics(params);
+    }
 }

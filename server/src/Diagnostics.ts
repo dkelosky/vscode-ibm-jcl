@@ -3,21 +3,14 @@ import { TextDocument, Diagnostic, DiagnosticSeverity } from "vscode-languageser
 export class Diagnostics {
     public static readonly MAX_LEN = 80;
 
-    public static checkLengths(document: TextDocument, diagnostics: Diagnostic[], maxProblems: number): void {
+    public static checkLengths(document: TextDocument, diagnostics: Diagnostic[]): void {
 
         const text = document.getText();
-        let problems = diagnostics.length;
 
         const lines = text.split(/\r?\n/);
         for (let i = 0; i < lines.length - 1; i++) {
 
-            if (problems > maxProblems) {
-                break;
-            }
-
-            if (lines[i].length  > Diagnostics.MAX_LEN) {
-                problems++;
-
+            if (lines[i].length > Diagnostics.MAX_LEN) {
                 const diagnostic: Diagnostic = {
                     severity: DiagnosticSeverity.Error,
                     range: {

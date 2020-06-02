@@ -1,6 +1,5 @@
 import { Settings, IJclSettings } from "../src/Settings"
 import { Capabilities } from "../src/Capabilities"
-import { Connection, createConnection } from "vscode-languageserver";
 
 
 describe("Settings tests", () => {
