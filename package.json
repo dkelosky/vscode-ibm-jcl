@@ -6,7 +6,7 @@
         "url": "https://github.com/dkelosky/vscode-ibm-jcl",
         "type": "git"
     },
-    "version": "0.9.0",
+    "version": "0.10.0",
     "keywords": [
         "z/OS",
         "s390",
