@@ -134,7 +134,7 @@
       "patterns": [
         {
           "begin": "([^*]\\S*)?\\s+(DD\\s+\\*\\S*?)\\s(.*)",
-          "end": "(.*)(^\\/\\*)(.*)",
+          "end": "((^\\/\\*)|(^\\/\\/\\s+$)|(^\\/\\/(?!\\*).*?$)|(^\\/\\/\\*.*$))(.*)",
           "beginCaptures": {
             "1": {
               "patterns": [
@@ -151,29 +151,31 @@
             }
           },
           "endCaptures": {
-            "1": {
+            "2": {
               "patterns": [
                 {
-                  "match": "(\\/\\/)?(.*)",
-                  "captures": {
-                    "1": {
-                      "patterns": [
-                        {
-                          "include": "#labels"
-                        }
-                      ]
-                    },
-                    "2": {
-                      "name": "variable.parameter.jcl"
-                    }
-                  }
+                  "include": "#labels"
                 }
               ]
             },
-            "2": {
-              "name": "keyword.other.jcl"
-            },
             "3": {
+              "patterns": [
+                {
+                  "include": "#labels"
+                }
+              ]
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#jclLineReuse"
+                }
+              ]
+            },
+            "5": {
+              "name": "comment.line.double-slash.jcl"
+            },
+            "6": {
               "name": "comment.line.double-slash.jcl"
             }
           },
@@ -430,7 +432,7 @@
               "name": "punctuation.definition.variable"
             },
             "2": {
-              "name": "variable.other"
+              "name": "variable.other.jcl"
             },
             "3": {
               "name": "punctuation.definition.variable"
