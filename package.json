@@ -24,6 +24,12 @@
     ],
     "main": "./client/out/extension",
     "contributes": {
+        "commands": [
+            {
+                "command": "extension.helloWorld",
+                "title": "Hello World"
+            }
+        ],
         "semanticTokenScopes": [
             {
                 "language": "jcl",
@@ -102,5 +108,8 @@
         "js-yaml": "^3.13.1",
         "ts-jest": "^24.0.2",
         "typescript": "^3.8.3"
+    },
+    "dependencies": {
+        "vscode-extension-telemetry": "^0.1.6"
     }
 }

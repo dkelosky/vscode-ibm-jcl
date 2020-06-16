@@ -4,7 +4,8 @@
  * ------------------------------------------------------------------------------------------ */
 
 import * as path from "path";
-import { workspace, ExtensionContext } from "vscode";
+import { workspace, ExtensionContext, window, commands } from "vscode";
+import TelemetryReporter  from "vscode-extension-telemetry";
 
 import {
     LanguageClient,
@@ -15,7 +16,33 @@ import {
 
 let client: LanguageClient;
 
+// all events will be prefixed with this event name
+const extensionId = 'ibm-jcl';
+
+// extension version will be reported as a property with each event 
+const extensionVersion = '0.11.0';
+
+// the application insights key (also known as instrumentation key)
+const key = '74997a52-f83f-42b1-bd75-586c155a8fc5';
+
+// telemetry reporter 
+let reporter: TelemetryReporter;
+
 export function activate(context: ExtensionContext) {
+
+    reporter = new TelemetryReporter(extensionId, extensionVersion, key);
+    // ensure it gets property disposed
+    context.subscriptions.push(reporter);
+
+    const disposable = commands.registerCommand('extension.helloWorld', () => {
+		// The code you place here will be executed every time your command is executed
+
+		// Display a message box to the user
+        window.showInformationMessage('Hello World!');
+        
+        reporter.sendTelemetryEvent('sampleEvent', { 'stringProp': 'some string' }, { 'numericMeasure': 123 });
+	});
+
     // The server is implemented in node
     const serverModule = context.asAbsolutePath(
         path.join("server", "out", "server.js")
@@ -62,6 +89,9 @@ export function activate(context: ExtensionContext) {
 }
 
 export function deactivate(): Thenable<void> | undefined {
+    // This will ensure all pending events get flushed
+    reporter.dispose();
+
     if (!client) {
         return undefined;
     }
